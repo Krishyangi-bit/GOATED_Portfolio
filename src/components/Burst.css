@@ -1,0 +1,41 @@
+.burst {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  width: 10rem;
+  pointer-events: none;
+}
+
+.burst__shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.burst__shadow {
+  fill: var(--burst-ink);
+}
+.burst__outer {
+  fill: var(--burst-fill);
+  stroke: var(--burst-ink);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+.burst__inner {
+  fill: rgba(255, 255, 255, 0.35);
+}
+
+.burst__text {
+  position: relative;
+  font-family: var(--font-sfx);
+  font-size: 2.6em;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+  -webkit-text-stroke: 0.09em var(--burst-ink);
+  paint-order: stroke fill;
+  text-shadow: 0.06em 0.07em 0 var(--burst-ink);
+  transform: rotate(-8deg) skewX(-6deg);
+}

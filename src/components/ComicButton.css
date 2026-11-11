@@ -1,0 +1,164 @@
+.cbtn {
+  --btn-bg: var(--orange);
+  --btn-fg: var(--ink);
+  --btn-tilt: -1.5deg;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-decoration: none;
+  cursor: pointer;
+  transform: rotate(var(--btn-tilt));
+  transition: transform 0.25s var(--ease-pop);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cbtn__face {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.62em 1.25em 0.58em;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: var(--line) solid var(--ink);
+  border-radius: 12px 16px 10px 14px / 14px 10px 16px 12px;
+  box-shadow: 5px 5px 0 var(--ink);
+  font-family: var(--font-sfx);
+  font-size: clamp(1.15rem, 1rem + 0.5vw, 1.45rem);
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    transform 0.25s var(--ease-pop),
+    box-shadow 0.25s var(--ease-pop),
+    background-color 0.2s;
+}
+
+/* halftone sheen on the face */
+.cbtn__face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: var(--halftone-cream);
+  background-size: 7px 7px;
+  -webkit-mask-image: linear-gradient(135deg, #000 0%, transparent 55%);
+  mask-image: linear-gradient(135deg, #000 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.cbtn__icon {
+  display: inline-grid;
+  width: 1.1em;
+  height: 1.1em;
+}
+.cbtn__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cbtn--secondary {
+  --btn-bg: var(--teal);
+  --btn-fg: var(--cream);
+  --btn-tilt: 1.2deg;
+}
+.cbtn--ink {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--cream);
+  --btn-tilt: -0.8deg;
+}
+.cbtn--ink .cbtn__face {
+  box-shadow: 5px 5px 0 var(--orange);
+}
+
+/* speed lines that shoot out on hover */
+.cbtn__lines {
+  position: absolute;
+  left: -26px;
+  top: 50%;
+  width: 22px;
+  height: 30px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.cbtn__lines i {
+  position: absolute;
+  right: 0;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.22s var(--ease-out);
+}
+.cbtn__lines i:nth-child(1) {
+  top: 2px;
+  width: 14px;
+}
+.cbtn__lines i:nth-child(2) {
+  top: 13px;
+  width: 22px;
+  transition-delay: 0.04s;
+}
+.cbtn__lines i:nth-child(3) {
+  top: 24px;
+  width: 12px;
+  transition-delay: 0.08s;
+}
+
+/* sound-effect word */
+.cbtn__sfx {
+  position: absolute;
+  right: -10px;
+  top: -22px;
+  z-index: 2;
+  padding: 0.1em 0.4em;
+  font-family: var(--font-sfx);
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  transform: rotate(10deg) scale(0);
+  transition: transform 0.3s var(--ease-pop);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .cbtn:hover {
+    transform: rotate(0deg);
+  }
+  .cbtn:hover .cbtn__face {
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 var(--ink);
+  }
+  .cbtn--ink:hover .cbtn__face {
+    box-shadow: 9px 9px 0 var(--orange);
+  }
+  .cbtn:hover .cbtn__lines i {
+    transform: scaleX(1);
+  }
+  .cbtn:hover .cbtn__sfx {
+    transform: rotate(10deg) scale(1);
+  }
+}
+
+.cbtn:focus-visible {
+  outline: none;
+}
+.cbtn:focus-visible .cbtn__face {
+  outline: 3px dashed var(--cobalt);
+  outline-offset: 5px;
+}
+
+.cbtn:active .cbtn__face {
+  transform: translate(4px, 4px);
+  box-shadow: 1px 1px 0 var(--ink);
+  transition-duration: 0.06s;
+}

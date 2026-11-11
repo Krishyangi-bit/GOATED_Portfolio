@@ -1,0 +1,37 @@
+.peek {
+  position: fixed;
+  left: 0;
+  bottom: 18px;
+  z-index: 70;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.peek__face {
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
+  object-position: 42% 14%;
+  border: var(--line-bold) solid var(--ink);
+  border-left: 0;
+  border-radius: 0 50% 50% 0;
+  background: var(--yellow);
+  box-shadow: var(--print-shadow);
+}
+
+.peek__bubble {
+  margin-top: 8px;
+  max-width: 14rem;
+}
+
+@media (max-width: 639px) {
+  .peek__face {
+    width: 92px;
+    height: 92px;
+  }
+  .peek__bubble {
+    max-width: 11rem;
+  }
+}

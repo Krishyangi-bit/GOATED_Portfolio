@@ -1,0 +1,1146 @@
+/* ==========================================================================
+   ACT 02 — THE ORIGIN STORY
+   A new page that slides over the cover, torn edge first.
+   ========================================================================== */
+
+.origin {
+  position: relative;
+  z-index: 2;
+  padding: clamp(48px, 7vw, 100px) calc(var(--gutter) + 56px) 40px var(--gutter);
+  background-color: var(--paper);
+  background-image: radial-gradient(circle at 100% 0%, rgba(31, 122, 115, 0.1), transparent 40%);
+  box-shadow: 0 -30px 60px rgba(22, 19, 28, 0.45);
+  will-change: transform;
+}
+@media (max-width: 1023px) {
+  .origin {
+    padding-right: var(--gutter);
+  }
+}
+
+.origin__edge {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% - 1px);
+  width: 100%;
+  height: 26px;
+  fill: var(--paper);
+}
+
+/* splash ------------------------------------------------------------------- */
+.origin__splash {
+  max-width: var(--page-max);
+  margin: 0 auto clamp(56px, 7vw, 90px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-areas:
+    'chapter chapter'
+    'title intro'
+    'aside intro';
+  align-items: end;
+  column-gap: clamp(24px, 4vw, 64px);
+}
+.origin__chapter {
+  grid-area: chapter;
+  justify-self: start;
+  margin-bottom: 14px;
+  transform: rotate(-2deg);
+}
+.origin__title {
+  grid-area: title;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.22em;
+  font-family: var(--font-head);
+  font-weight: 400;
+  font-size: clamp(3.3rem, 8.6vw, 8.6rem);
+  line-height: 0.92;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+.origin__word {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.04em 0.06em 0.06em 0;
+}
+.origin__word-inner {
+  display: inline-block;
+}
+.origin__word:nth-child(2) .origin__word-inner {
+  color: var(--orange);
+  -webkit-text-stroke: 0.025em var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 0.05em 0.05em 0 var(--ink);
+}
+.origin__aside {
+  grid-area: aside;
+  position: relative;
+  justify-self: start;
+  margin-top: 6px;
+  color: var(--teal-deep);
+  font-size: 1.6rem;
+  rotate: -3deg;
+}
+.origin__underline {
+  width: 100%;
+  height: 14px;
+  overflow: visible;
+}
+.origin__underline path {
+  fill: none;
+  stroke: var(--orange);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+}
+.origin__intro {
+  grid-area: intro;
+  padding: 0.2em 0 0.2em 1em;
+  border-left: 6px solid var(--teal);
+  font-size: clamp(1.02rem, 0.95rem + 0.3vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* page grid ---------------------------------------------------------------- */
+.origin__grid {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(48px, 5vw, 70px) clamp(22px, 2.4vw, 32px);
+}
+
+.p1 {
+  --h: clamp(440px, 37vw, 520px);
+  grid-column: 1 / 9;
+  height: var(--h);
+}
+.p2 {
+  grid-column: 9 / 13;
+}
+.p3 {
+  --h: clamp(430px, 34vw, 470px);
+  grid-column: 1 / 6;
+  height: var(--h);
+}
+.p4 {
+  --h: clamp(430px, 34vw, 470px);
+  grid-column: 6 / 13;
+  height: var(--h);
+}
+.p5 {
+  grid-column: 1 / 13;
+}
+.pf {
+  grid-column: 1 / 7;
+}
+.p6 {
+  grid-column: 7 / 13;
+  min-height: 540px;
+}
+
+/* shared bits inside panels ------------------------------------------------- */
+.panel__clip .caption {
+  position: relative;
+  z-index: 3;
+}
+
+/* ---------------------------------------------------------------------------
+   PANEL 01 — THE BEGINNING  (wide, cinematic; she breaks the frame)
+   ------------------------------------------------------------------------- */
+.p1 .panel__clip {
+  padding: 52px clamp(22px, 3vw, 40px) 36px;
+}
+.p1__art {
+  position: absolute;
+  inset: -12% -6%;
+  background:
+    radial-gradient(circle at 78% 70%, rgba(255, 210, 63, 0.85), transparent 45%),
+    repeating-conic-gradient(from 0deg at 78% 72%, var(--orange) 0deg 6deg, var(--orange-light) 6deg 12deg);
+}
+.p1__art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--halftone-ink);
+  background-size: 10px 10px;
+  opacity: 0.2;
+  -webkit-mask-image: linear-gradient(100deg, #000 10%, transparent 60%);
+  mask-image: linear-gradient(100deg, #000 10%, transparent 60%);
+}
+.p1__copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 54%;
+}
+.p1__meet {
+  font-family: var(--font-head);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+  letter-spacing: 0.04em;
+  transform: rotate(-1.5deg);
+}
+.p1__line {
+  font-size: 0.95rem;
+  text-transform: none;
+  letter-spacing: 0.01em;
+}
+.p1__edu {
+  display: grid;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 0.75em 1em;
+  background: var(--cream);
+  border: var(--line) solid var(--ink);
+  box-shadow: var(--print-shadow-sm);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.p1__edu-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teal-deep);
+}
+.p1__char {
+  --ch: calc(var(--h) + 34px);
+  position: absolute;
+  z-index: 5;
+  right: 2%;
+  bottom: 4px;
+  height: var(--ch);
+  width: calc(var(--ch) * 0.7063);
+}
+.p1__char .char {
+  height: 100%;
+  width: 100%;
+}
+.p1__bubble {
+  position: absolute;
+  z-index: 6;
+  left: 31%;
+  bottom: 7%;
+  width: max-content;
+  max-width: 15rem;
+}
+
+/* ---------------------------------------------------------------------------
+   PANEL 02 — THE CURIOSITY  (tall; thinking pose; three worlds orbiting)
+   ------------------------------------------------------------------------- */
+.p2__halo {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(circle at 50% 62%, rgba(143, 208, 196, 0.55), transparent 45%),
+    repeating-radial-gradient(circle at 50% 62%, transparent 0 22px, rgba(255, 248, 234, 0.06) 22px 24px);
+}
+.p2__char {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: -40%;
+  height: 128%;
+  aspect-ratio: 743 / 1052;
+  translate: -50% 0;
+}
+.p2__char .char {
+  height: 100%;
+}
+.p2__thought {
+  position: absolute;
+  z-index: 3;
+  left: 8%;
+  top: 46px;
+}
+.p2__thought .bubble__body {
+  font-family: var(--font-sfx);
+  font-weight: 400;
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+}
+.p2__worlds {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+.p2__world {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 7px;
+  background: var(--cream);
+  color: var(--ink);
+  border: var(--line) solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--ink);
+  font-family: var(--font-sfx);
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  animation: p2-float 4.5s ease-in-out infinite;
+}
+.p2__world-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+}
+.p2__world-icon svg {
+  width: 17px;
+  height: 17px;
+}
+.p2__world--software {
+  right: 6%;
+  top: 22%;
+}
+.p2__world--ai {
+  left: 5%;
+  top: 40%;
+  animation-delay: -1.5s;
+}
+.p2__world--ai .p2__world-icon {
+  background: var(--orange);
+}
+.p2__world--hardware {
+  right: 4%;
+  top: 46%;
+  animation-delay: -3s;
+}
+.p2__world--hardware .p2__world-icon {
+  background: var(--teal-light);
+}
+@keyframes p2-float {
+  50% {
+    translate: 0 -8px;
+    rotate: -3deg;
+  }
+}
+.p2__caption {
+  position: absolute !important;
+  left: 14px;
+  right: 14px;
+  bottom: 16px;
+  text-align: center;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 0.95rem;
+}
+
+/* ---------------------------------------------------------------------------
+   PANEL 03 — THE FIRST LINE OF CODE  (ink; terminal types itself)
+   ------------------------------------------------------------------------- */
+.p3 .panel__clip {
+  padding: 50px clamp(18px, 2.4vw, 32px) 28px;
+}
+.p3__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(143, 208, 196, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143, 208, 196, 0.09) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+.p3__caption {
+  font-size: 0.9rem;
+}
+.term {
+  position: relative;
+  z-index: 2;
+  margin-top: 22px;
+  background: #0b0a10;
+  border: var(--line) solid var(--cream);
+  border-radius: 10px;
+  box-shadow: 6px 6px 0 var(--orange);
+  overflow: hidden;
+}
+.term__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--ink-soft);
+  border-bottom: 2px solid var(--cream);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(255, 248, 234, 0.6);
+}
+.term__bar i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--red);
+}
+.term__bar i:nth-child(2) {
+  background: var(--yellow);
+}
+.term__bar i:nth-child(3) {
+  background: var(--teal-light);
+}
+.term__bar span {
+  margin-left: 8px;
+}
+.term__body {
+  padding: 14px 16px 16px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 0.72rem + 0.25vw, 0.92rem);
+  line-height: 1.75;
+  color: var(--teal-light);
+}
+.term__line {
+  display: flex;
+  gap: 0.6ch;
+  white-space: pre;
+}
+.term__line.is-cmd {
+  color: var(--cream);
+}
+.term__prompt {
+  color: var(--orange);
+  flex: none;
+}
+.term__text {
+  display: inline-block;
+  overflow: hidden;
+  width: 0;
+  vertical-align: bottom;
+}
+.term__cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  margin-top: 4px;
+  background: var(--yellow);
+  animation: term-blink 1s steps(1) infinite;
+}
+@keyframes term-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.p3__note {
+  position: relative;
+  z-index: 2;
+  margin-top: 14px;
+  color: var(--yellow);
+  rotate: -2deg;
+}
+.p3__sfx {
+  position: absolute;
+  z-index: 3;
+  right: 18px;
+  top: 30px;
+  font-family: var(--font-sfx);
+  font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+  color: var(--yellow);
+  -webkit-text-stroke: 0.06em var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 3px 3px 0 var(--orange);
+  rotate: 12deg;
+}
+
+/* ---------------------------------------------------------------------------
+   PANEL 04 — THE FIRST BUG  (explosive; diagonal frame)
+   ------------------------------------------------------------------------- */
+.p4 .panel__clip {
+  padding: 46px clamp(18px, 2.4vw, 32px) 24px clamp(26px, 3vw, 40px);
+}
+.p4__burst {
+  position: absolute;
+  left: -6%;
+  top: 12%;
+  width: 62%;
+}
+.p4__burst .burst {
+  width: 100%;
+}
+.p4__burst .burst__outer {
+  stroke-width: 1.2;
+}
+.p4__setup {
+  max-width: 44%;
+  font-size: 0.8rem;
+}
+.p4__pi {
+  position: absolute;
+  z-index: 2;
+  left: 4%;
+  top: 29%;
+  width: 38%;
+}
+.rpi {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(5px 5px 0 var(--ink));
+}
+.rpi__smoke circle {
+  fill: #d9d3cb;
+  stroke: var(--ink);
+  stroke-width: 3;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rpi-smoke 2.4s ease-out infinite;
+}
+.rpi__smoke circle:nth-child(2) {
+  animation-delay: -0.8s;
+}
+.rpi__smoke circle:nth-child(3) {
+  animation-delay: -1.6s;
+}
+@keyframes rpi-smoke {
+  0% {
+    translate: 0 18px;
+    scale: 0.4;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    translate: 6px -26px;
+    scale: 1.15;
+    opacity: 0;
+  }
+}
+.rpi__sparks {
+  animation: rpi-spark 0.5s steps(2) infinite;
+}
+@keyframes rpi-spark {
+  50% {
+    opacity: 0.2;
+  }
+}
+.p4__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  width: max-content;
+  margin: 0 0 0 26%;
+  padding: 2px 8px 4px;
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  color: var(--ink);
+  font-size: 1.15rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.p4__label-arrow {
+  flex: none;
+  width: 46px;
+  height: auto;
+  transform: scaleY(-1) rotate(-12deg);
+  translate: 0 -18px;
+}
+.p4__sfx {
+  position: absolute;
+  z-index: 3;
+  left: 30%;
+  top: 25%;
+  font-family: var(--font-sfx);
+  font-size: clamp(2.6rem, 4vw, 3.8rem);
+  color: var(--yellow);
+  -webkit-text-stroke: 0.06em var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 4px 4px 0 var(--ink);
+  rotate: -12deg;
+}
+.p4__char {
+  position: absolute;
+  z-index: 1;
+  right: -3%;
+  bottom: -4px;
+  height: 100%;
+  aspect-ratio: 743 / 1052;
+}
+.p4__char .char {
+  height: 100%;
+}
+.p4__bubble {
+  position: absolute;
+  z-index: 4;
+  right: 21%;
+  top: 7%;
+  width: max-content;
+  max-width: 13rem;
+}
+.p4__moral {
+  position: absolute !important;
+  left: clamp(26px, 3vw, 40px);
+  bottom: 22px;
+  max-width: 46%;
+  font-size: 0.82rem;
+}
+
+/* ---------------------------------------------------------------------------
+   PANEL 05 — THE EVOLUTION  (full width; a power-up track)
+   ------------------------------------------------------------------------- */
+.p5 .panel__clip {
+  padding: 56px clamp(22px, 3vw, 44px) 40px;
+  padding-right: clamp(150px, 22%, 300px);
+}
+.p5__speed {
+  position: absolute;
+  inset: -20% 0;
+  background: repeating-linear-gradient(-62deg, transparent 0 34px, rgba(255, 248, 234, 0.07) 34px 38px);
+}
+.p5__head {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 36px;
+}
+.p5__title {
+  font-family: var(--font-head);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 3.4vw, 3rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.evo {
+  --evo-progress: 0;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+}
+.evo__track {
+  position: absolute;
+  left: 11px;
+  right: 10%;
+  top: 9px;
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(255, 248, 234, 0.25);
+}
+.evo__fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--yellow);
+  transform: scaleX(var(--evo-progress));
+  transform-origin: left center;
+}
+.evo__node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 38px;
+  opacity: 0.45;
+  transition: opacity 0.4s;
+}
+.evo__dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--cobalt-deep);
+  border: var(--line) solid var(--cream);
+  transition:
+    background-color 0.3s,
+    scale 0.4s var(--ease-pop);
+}
+.evo__node.is-on {
+  opacity: 1;
+}
+.evo__node.is-on .evo__dot {
+  background: var(--yellow);
+  border-color: var(--ink);
+  scale: 1.25;
+}
+.evo__when {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal-light);
+}
+.evo__what {
+  font-family: var(--font-sfx);
+  font-weight: 400;
+  font-size: 1.55rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.evo__detail {
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: rgba(255, 248, 234, 0.88);
+}
+.p5__now {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 34px;
+}
+.p5__now-label {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--yellow);
+}
+.p5__now ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.p5__now li {
+  padding: 5px 12px;
+  background: var(--cream);
+  color: var(--ink);
+  border: 2.5px solid var(--ink);
+  border-radius: 6px;
+  box-shadow: 3px 3px 0 var(--ink);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.p5__now li:nth-child(odd) {
+  rotate: -2deg;
+}
+.p5__now li:nth-child(even) {
+  rotate: 1.5deg;
+}
+.p5__char {
+  position: absolute;
+  z-index: 1;
+  right: 1%;
+  bottom: -4px;
+  height: min(92%, 420px);
+  aspect-ratio: 743 / 1052;
+}
+.p5__char .char {
+  height: 100%;
+}
+.p5__sfx {
+  position: absolute;
+  z-index: 3;
+  right: 3%;
+  top: 18px;
+  font-family: var(--font-sfx);
+  font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+  color: var(--yellow);
+  -webkit-text-stroke: 0.06em var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 3px 3px 0 var(--ink);
+  rotate: 8deg;
+}
+
+/* ---------------------------------------------------------------------------
+   CHARACTER FILE  (dossier card)
+   ------------------------------------------------------------------------- */
+.file {
+  padding: 52px clamp(20px, 3vw, 38px) 34px;
+  background-image: repeating-linear-gradient(transparent 0 31px, rgba(31, 122, 115, 0.12) 31px 32px);
+}
+.file__head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 18px;
+  margin-bottom: 8px;
+  border-bottom: var(--line) solid var(--ink);
+}
+.file__photo {
+  flex: none;
+  width: 86px;
+  height: 86px;
+  object-fit: cover;
+  object-position: 44% 16%;
+  background: var(--teal-light);
+  border: var(--line) solid var(--ink);
+  border-radius: 8px;
+  box-shadow: var(--print-shadow-sm);
+  rotate: -3deg;
+}
+.file__name {
+  font-family: var(--font-head);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.file__role {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal-deep);
+}
+.file__stamp {
+  position: absolute;
+  right: 0;
+  top: -6px;
+  padding: 4px 10px;
+  border: 3px solid var(--red);
+  border-radius: 6px;
+  color: var(--red);
+  font-family: var(--font-sfx);
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  rotate: 10deg;
+  opacity: 0.85;
+}
+.file__rows {
+  margin: 0;
+}
+.file__row {
+  display: grid;
+  grid-template-columns: 9.5rem minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 2px dashed rgba(22, 19, 28, 0.25);
+}
+.file__row dt {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange-deep);
+  padding-top: 2px;
+}
+.file__row dd {
+  margin: 0;
+  font-size: 0.97rem;
+  font-weight: 500;
+}
+
+/* ---------------------------------------------------------------------------
+   PANEL 06 — TO BE CONTINUED  (she waves goodbye — for now)
+   ------------------------------------------------------------------------- */
+.p6 .panel__clip {
+  min-height: inherit;
+}
+.p6__rays {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(circle at 70% 75%, rgba(255, 248, 234, 0.9), transparent 40%),
+    repeating-conic-gradient(from 0deg at 70% 78%, var(--pink) 0deg 7deg, #fbd3df 7deg 14deg);
+}
+.p6__char {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: -4px;
+  height: 90%;
+  aspect-ratio: 743 / 1052;
+}
+.p6__char .char {
+  height: 100%;
+}
+.p6__bubble {
+  position: absolute;
+  z-index: 3;
+  left: 6%;
+  top: 52px;
+  width: max-content;
+  max-width: min(17rem, 55%);
+}
+.p6__tbc {
+  position: absolute;
+  z-index: 3;
+  left: 6%;
+  bottom: 104px;
+  font-family: var(--font-sfx);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+  line-height: 1;
+  color: var(--cream);
+  -webkit-text-stroke: 0.06em var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 0.06em 0.06em 0 var(--ink);
+  rotate: -5deg;
+}
+.p6__links {
+  position: absolute !important;
+  z-index: 4;
+  left: calc(6% + 22px);
+  bottom: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 26px;
+}
+
+/* end of issue ---------------------------------------------------------- */
+.origin__end {
+  max-width: var(--page-max);
+  margin: clamp(70px, 9vw, 120px) auto 0;
+  padding-top: 26px;
+  text-align: center;
+  border-top: var(--line) solid var(--ink);
+  font-size: 1.05rem;
+}
+.origin__end-swoosh {
+  width: 90px;
+  margin: 0 auto 12px;
+}
+.origin__end-copy {
+  margin-top: 8px;
+  font-size: 0.82rem;
+  color: var(--ink-mute);
+}
+
+/* ==========================================================================
+   Tablet (640–1023): two-up where it reads well, otherwise full width
+   ========================================================================== */
+@media (max-width: 1023px) {
+  .origin__splash {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'chapter'
+      'title'
+      'aside'
+      'intro';
+    row-gap: 10px;
+  }
+  .origin__intro {
+    margin-top: 18px;
+    max-width: 36rem;
+  }
+  .p1 {
+    grid-column: 1 / -1;
+  }
+  .p2 {
+    grid-column: 1 / 7;
+    height: 460px;
+  }
+  .p3 {
+    grid-column: 7 / 13;
+    height: 460px;
+  }
+  .p4,
+  .p5,
+  .pf,
+  .p6 {
+    grid-column: 1 / -1;
+  }
+  .p5 .panel__clip {
+    padding-right: clamp(22px, 3vw, 44px);
+    padding-bottom: 300px;
+  }
+  .evo {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 28px;
+  }
+  .evo__track {
+    display: none;
+  }
+  .p5__char {
+    height: 300px;
+  }
+  .p5__now {
+    max-width: 60%;
+  }
+}
+
+/* ==========================================================================
+   Mobile (< 640): one column, re-composed panels
+   ========================================================================== */
+@media (max-width: 639px) {
+  .origin {
+    padding-top: 40px;
+  }
+  .origin__title {
+    font-size: clamp(2.9rem, 16vw, 4.4rem);
+  }
+  .origin__aside {
+    font-size: 1.35rem;
+  }
+
+  .p1,
+  .p2,
+  .p3,
+  .p4 {
+    grid-column: 1 / -1;
+    height: auto;
+  }
+
+  /* P1: copy on top, she stands bottom-right and pokes out of the frame */
+  .p1 {
+    --h: 330px;
+  }
+  .p1 .panel__clip {
+    padding: 46px 18px 300px;
+  }
+  .p1__copy {
+    max-width: none;
+  }
+  .p1__char {
+    --ch: 330px;
+    right: 0;
+  }
+  .p1__bubble {
+    right: auto;
+    left: 12px;
+    top: auto;
+    bottom: 130px;
+    max-width: 48%;
+  }
+
+  /* P2 */
+  .p2 {
+    height: 440px !important;
+  }
+  .p2__world--ai {
+    left: 4%;
+    top: 56%;
+  }
+
+  /* P3 */
+  .p3 .panel__clip {
+    padding: 46px 14px 22px;
+  }
+  .p3__sfx {
+    top: 40px;
+    right: 10px;
+    font-size: 1.6rem;
+  }
+
+  /* P4: stacked — setup, board, then her reaction */
+  .p4 .panel__clip {
+    padding: 48px 16px 300px;
+  }
+  .p4__setup,
+  .p4__moral {
+    max-width: none;
+  }
+  .p4__pi {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 92%;
+    margin: 18px auto 0;
+  }
+  .p4__burst {
+    width: 130%;
+    left: -20%;
+    top: 8%;
+  }
+  .p4__sfx {
+    left: auto;
+    right: 8%;
+    top: 92px;
+    font-size: 2.4rem;
+  }
+  .p4__char {
+    height: 300px;
+    right: -6%;
+  }
+  .p4__bubble {
+    right: auto;
+    left: 12px;
+    top: auto;
+    bottom: 120px;
+    max-width: 52%;
+  }
+  .p4__moral {
+    position: absolute !important;
+    left: 12px;
+    right: auto;
+    bottom: 26px;
+    max-width: 52%;
+  }
+
+  /* P5: vertical power-up track */
+  .p5 .panel__clip {
+    padding: 50px 18px 290px;
+  }
+  .evo {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    padding-left: 4px;
+  }
+  .evo__track {
+    display: block;
+    left: 13px;
+    right: auto;
+    top: 6px;
+    bottom: 10px;
+    width: 5px;
+    height: auto;
+  }
+  .evo__fill {
+    transform: scaleY(var(--evo-progress));
+    transform-origin: center top;
+  }
+  .evo__node {
+    padding: 0 0 0 42px;
+  }
+  .evo__dot {
+    top: 2px;
+  }
+  .p5__now {
+    max-width: none;
+  }
+  .p5__char {
+    height: 270px;
+    right: 0;
+  }
+  .p5__sfx {
+    top: auto;
+    bottom: 230px;
+    right: auto;
+    left: 18px;
+  }
+
+  /* file */
+  .file__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+  .file__photo {
+    width: 68px;
+    height: 68px;
+  }
+  .file__stamp {
+    top: -30px;
+    font-size: 1rem;
+  }
+
+  /* P6 */
+  .p6 {
+    min-height: 600px;
+  }
+  .p6__char {
+    height: 62%;
+    right: -8%;
+  }
+  .p6__bubble {
+    max-width: 70%;
+    left: 14px;
+  }
+  .p6__tbc {
+    left: 14px;
+    bottom: 120px;
+  }
+  .p6__links {
+    left: 18px;
+    gap: 14px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .term__text {
+    width: auto;
+  }
+}

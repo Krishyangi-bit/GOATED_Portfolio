@@ -1,0 +1,93 @@
+.panel {
+  --panel-bg: var(--cream);
+  --panel-fg: var(--ink);
+  position: relative;
+  min-width: 0;
+  color: var(--panel-fg);
+}
+
+.panel__clip {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  overflow: hidden;
+  background: var(--panel-bg);
+  isolation: isolate;
+}
+
+.panel__shadow,
+.panel__border {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.panel__shadow {
+  z-index: 0;
+  transform: translate(9px, 9px);
+}
+.panel__shadow polygon {
+  fill: var(--ink);
+}
+.panel__border {
+  z-index: 3;
+}
+.panel__line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 5;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+}
+
+.panel__tab {
+  position: absolute;
+  z-index: 4;
+  left: 18px;
+  top: -14px;
+  transform-origin: left center;
+}
+
+@media (max-width: 639px) {
+  .panel__shadow {
+    transform: translate(6px, 6px);
+  }
+  .panel__line {
+    stroke-width: 4;
+  }
+  .panel__tab {
+    left: 12px;
+    font-size: 0.72rem;
+  }
+}
+
+/* tones: each scene picks one background family ----------------------- */
+.tone-cream {
+  --panel-bg: var(--cream);
+}
+.tone-orange {
+  --panel-bg: var(--orange);
+}
+.tone-teal {
+  --panel-bg: var(--teal-deep);
+  --panel-fg: var(--cream);
+}
+.tone-ink {
+  --panel-bg: var(--ink);
+  --panel-fg: var(--cream);
+}
+.tone-red {
+  --panel-bg: var(--red);
+  --panel-fg: var(--cream);
+}
+.tone-cobalt {
+  --panel-bg: var(--cobalt);
+  --panel-fg: var(--cream);
+}
+.tone-yellow {
+  --panel-bg: var(--yellow);
+}
+.tone-pink {
+  --panel-bg: var(--pink);
+}

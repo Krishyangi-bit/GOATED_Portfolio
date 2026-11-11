@@ -1,0 +1,83 @@
+.char {
+  position: relative;
+  display: block;
+  aspect-ratio: 743 / 1052;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.char--interactive {
+  cursor: pointer;
+}
+.char--interactive:focus-visible {
+  outline: none;
+}
+.char--interactive:focus-visible .char__tilt::after {
+  content: '';
+  position: absolute;
+  inset: 4% 8% 0;
+  border: 3px dashed var(--cobalt);
+  border-radius: 40% 40% 8px 8px;
+}
+
+.char__tilt,
+.char__rig,
+.char__breathe,
+.char__pose {
+  position: absolute;
+  inset: 0;
+}
+
+/* printed offset shadow, like a sticker lifted off the page */
+.char__tilt {
+  filter: drop-shadow(10px 8px 0 rgba(22, 19, 28, 0.2));
+  will-change: transform;
+}
+
+.char__rig {
+  transform-origin: 50% 100%;
+}
+
+.char__breathe {
+  transform-origin: 50% 100%;
+  animation: char-breathe 3.6s ease-in-out infinite alternate;
+}
+.char.is-paused .char__breathe {
+  animation-play-state: paused;
+}
+
+@keyframes char-breathe {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(-0.3%) scale(1.004, 1.012);
+  }
+}
+
+.char__pose {
+  transform-origin: 50% 88%;
+  will-change: opacity, transform;
+}
+
+.char__img,
+.char__blink,
+.char__hand {
+  position: absolute;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.char__img {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.char__blink {
+  clip-path: inset(0% 0% 100% 0%);
+}
