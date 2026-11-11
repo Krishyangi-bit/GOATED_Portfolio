@@ -1,3 +1,4 @@
+
 # The Living Comic Book â€” Krishyangi's portfolio
 
 Phase 1: **Hero (Meet the Protagonist)** + **About (The Origin Story)**.
@@ -38,3 +39,6 @@ Add an entry to `CHAPTERS` in `src/content/site.ts` and render a `<section id="â
 - Type `bam` anywhere.
 - Scroll through the origin story really fast.
 - Hover a hero button without clicking.
+
+# GOATED_Portfolio
+5756f21cc6d4ce0edcb5210fbb2c7c664906bb52
