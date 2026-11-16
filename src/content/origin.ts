@@ -2,11 +2,11 @@
  * ACT 02 — THE ORIGIN STORY
  *
  * Sources (nothing here is invented):
- *  - Taglines, interests, "learning", "ask me about", "looking for" and the
+ *  - Taglines, "learning", "ask me about", "looking for" and the
  *    Raspberry Pi voltage-divider story: Krishyangi's GitHub profile README.
  *  - Dates: creation dates of her public GitHub repositories.
  *
- * `null` values render as visible TODO placeholders until filled in.
+ * Education, age and interests: supplied directly by Krishyangi.
  */
 export const ORIGIN = {
   intro:
@@ -17,12 +17,8 @@ export const ORIGIN = {
     lines: ['Meet Krishyangi.', 'Student. Developer. Professional asker of “what if?”'],
     motto: 'Curious by default. Builder by choice. Debugger by necessity.',
     education: {
-      /** e.g. 'B.Tech in Computer Science' */
-      degree: null as string | null,
-      /** e.g. 'Your University' */
-      institution: null as string | null,
-      /** e.g. '2025 – 2029' */
-      years: null as string | null,
+      degree: 'BTech Degree in CSE',
+      institution: 'KR Mangalam University',
     },
   },
 
@@ -73,21 +69,26 @@ export const ORIGIN = {
   },
 
   file: {
-    title: 'Character File',
+    title: 'Character Profile',
+    age: 19,
     rows: [
-      { k: 'Class', v: 'Builder: software, AI & hardware' },
+      { k: 'Class', v: 'Developer in progress (software, AI & hardware)' },
       { k: 'Traits', v: 'Curious by default · Builder by choice · Debugger by necessity' },
       { k: 'Special move', v: 'Hardware debugging' },
       { k: 'Ask her about', v: 'Computer vision on a Raspberry Pi, and building student-led projects' },
       { k: 'Known weakness', v: 'A missing voltage divider (it’s personal)' },
       { k: 'Easter egg', v: 'An ASCII-art Shinchan lives in her GitHub README' },
     ],
-    /** Off-duty interests and hobbies — add your own, e.g. ['music', 'sketching']. */
-    interests: null as string[] | null,
+    /** Off-duty interests. `key` picks the little animation drawn for each. */
+    interests: [
+      { key: 'yap', label: 'Professional yapper', quip: 'Ask one question, get a whole podcast.' },
+      { key: 'music', label: 'Music is always playing', quip: 'The headphones are not decorative.' },
+      { key: 'wordsearch', label: 'Word-search enthusiast', quip: 'Finds hidden words. Also hidden bugs.' },
+    ] as const,
   },
 
   continued: {
-    title: 'To Be Continued…',
+    title: 'What’s Next',
     bubble: 'Looking for internships, collaborations, and interesting problems worth losing sleep over.',
   },
 };

@@ -1,0 +1,220 @@
+/* ==========================================================================
+   ISSUE #05 — THE MULTIVERSE
+   Deep space, four portals, each its own colour of reality.
+   ========================================================================== */
+
+.chapter--multiverse {
+  --page-bg: #0e0b1c;
+  --splash-accent: var(--pink);
+  /* clip sideways only, so the torn top edge can hang above the page */
+  overflow-x: clip;
+  background-image: radial-gradient(ellipse at 50% 120%, rgba(36, 69, 210, 0.45), transparent 60%);
+}
+.multiverse__stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 22%, #fff8ea 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 72% 14%, #fff8ea 50%, transparent 51%),
+    radial-gradient(2px 2px at 38% 64%, #ffd23f 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 86% 52%, #fff8ea 50%, transparent 51%),
+    radial-gradient(2px 2px at 58% 84%, #8fd0c4 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 24% 88%, #fff8ea 50%, transparent 51%),
+    radial-gradient(1px 1px at 50% 40%, #fff8ea 50%, transparent 51%);
+  background-size: 420px 420px;
+  opacity: 0.8;
+  animation: mv-drift 60s linear infinite;
+  pointer-events: none;
+}
+@keyframes mv-drift {
+  to {
+    background-position: 420px 210px;
+  }
+}
+
+.portals {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 44px);
+  padding-bottom: 20px;
+}
+.portals__slot:nth-child(even) {
+  translate: 0 40px;
+}
+
+.portal {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  color: var(--cream);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.portal__ring {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(100%, 230px);
+  aspect-ratio: 1;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, var(--p1) 0deg 14deg, var(--p2) 14deg 28deg);
+  border: var(--line-bold) solid var(--ink);
+  box-shadow:
+    0 0 0 4px var(--cream),
+    0 0 40px color-mix(in srgb, var(--p1) 60%, transparent);
+  animation: mv-spin 18s linear infinite;
+}
+.portal__core {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: min(68%, 156px);
+  aspect-ratio: 1;
+  margin-top: calc(min(100%, 230px) * 0.16);
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, color-mix(in srgb, var(--p1) 35%, #0e0b1c), #0e0b1c 70%);
+  border: var(--line) solid var(--ink);
+  box-shadow: inset 0 0 0 4px rgba(255, 248, 234, 0.15);
+  transition: scale 0.35s var(--ease-pop);
+}
+.portal__icon {
+  display: grid;
+  width: 44%;
+  color: var(--cream);
+  transition: rotate 0.5s var(--ease-pop);
+}
+.portal__icon svg {
+  width: 100%;
+  height: auto;
+}
+.portal__flash {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 50%;
+  width: min(100%, 230px);
+  aspect-ratio: 1;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, var(--p1) 40%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+.portal__text {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  margin-top: calc(min(100%, 230px) * 0.2);
+  text-align: center;
+}
+.portal__dimension {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--p1);
+}
+.portal__name {
+  font-family: var(--font-sfx);
+  font-weight: 400;
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--cream);
+  -webkit-text-stroke: 0.05em var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 0.06em 0.06em 0 var(--ink);
+}
+.portal__handle {
+  max-width: 100%;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255, 248, 234, 0.75);
+  overflow-wrap: anywhere;
+}
+
+/* hover: the portal spins up */
+@media (hover: hover) {
+  a.portal:hover .portal__ring {
+    animation-duration: 1.6s;
+  }
+  a.portal:hover .portal__core {
+    scale: 1.08;
+  }
+  a.portal:hover .portal__icon {
+    rotate: -12deg;
+  }
+}
+a.portal:focus-visible {
+  outline: none;
+}
+a.portal:focus-visible .portal__ring {
+  animation-duration: 1.6s;
+  box-shadow:
+    0 0 0 4px var(--cream),
+    0 0 0 9px var(--cobalt);
+}
+@keyframes mv-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/* not opened yet */
+.portal.is-closed .portal__ring {
+  animation: none;
+  filter: grayscale(0.7) brightness(0.7);
+}
+.portal.is-closed .portal__core {
+  opacity: 0.7;
+}
+.portal__tape {
+  position: absolute;
+  z-index: 3;
+  top: calc(min(100%, 230px) * 0.42);
+  left: -6%;
+  right: -6%;
+  padding: 6px 0;
+  background: repeating-linear-gradient(-45deg, var(--yellow) 0 14px, var(--ink) 14px 28px);
+  border: 2px solid var(--ink);
+  rotate: -10deg;
+  font-size: 0;
+}
+.portal__tape::after {
+  content: 'UNDER CONSTRUCTION';
+  display: block;
+  width: max-content;
+  margin: 0 auto;
+  padding: 1px 8px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-family: var(--font-sfx);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 899px) {
+  .portals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 56px;
+  }
+}
+@media (max-width: 479px) {
+  .portal__name {
+    font-size: 1.6rem;
+  }
+  .portal__dimension {
+    font-size: 1.05rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .multiverse__stars,
+  .portal__ring {
+    animation: none;
+  }
+}

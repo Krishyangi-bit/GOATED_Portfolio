@@ -1,0 +1,947 @@
+/* ==========================================================================
+   CHAPTER 05 — THE ARSENAL
+   Her field kit: one compact hard case, six compartments, a different
+   gadget in each. Keycaps, stickers, cartridges, floppies, chips, labels.
+   ========================================================================== */
+
+.chapter--arsenal {
+  --page-bg: #fff1d6;
+  --splash-accent: var(--orange);
+  background-image:
+    repeating-conic-gradient(from 0deg at 18% 60%, rgba(240, 122, 46, 0.07) 0deg 6deg, transparent 6deg 12deg),
+    radial-gradient(circle, rgba(22, 19, 28, 0.08) 1.1px, transparent 1.7px);
+  background-size:
+    100% 100%,
+    11px 11px;
+}
+
+/* the case ---------------------------------------------------------------- */
+.kit {
+  position: relative;
+  max-width: 1120px;
+  margin-top: 44px;
+  padding: 14px;
+  background:
+    radial-gradient(circle, rgba(255, 248, 234, 0.07) 1.1px, transparent 1.7px) 0 0 / 9px 9px,
+    var(--ink);
+  border: var(--line-bold) solid var(--ink);
+  border-radius: 24px;
+  box-shadow:
+    inset 0 0 0 3px #3a3443,
+    10px 12px 0 rgba(22, 19, 28, 0.22);
+}
+/* carry handle */
+.kit::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 2px);
+  width: min(200px, 34%);
+  height: 30px;
+  translate: -50% 0;
+  border: 7px solid var(--ink);
+  border-bottom: 0;
+  border-radius: 20px 20px 0 0;
+}
+
+.kit__lid {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 74px;
+  padding: 0 8px 12px 132px;
+}
+.kit__owner {
+  position: absolute;
+  left: 2px;
+  top: -44px;
+  width: 116px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: var(--line-bold) solid var(--ink);
+  border-radius: 50%;
+  background:
+    var(--halftone-cream) 0 0 / 8px 8px,
+    var(--yellow);
+  box-shadow: 0 0 0 4px var(--cream);
+  rotate: -6deg;
+}
+/* head-and-shoulders crop of the full rig, proportions kept */
+.kit__owner .char {
+  position: absolute;
+  width: 180%;
+  left: -36%;
+  top: -40%;
+}
+.kit__owner .char__tilt {
+  filter: none;
+}
+.kit__hello .bubble {
+  max-width: 26rem;
+}
+.kit__hello .bubble__body {
+  font-weight: 600;
+}
+.kit__stamp {
+  flex: none;
+  margin-left: auto;
+  padding: 4px 12px;
+  border: 2px dashed rgba(255, 210, 63, 0.7);
+  color: var(--yellow);
+  font-family: var(--font-sfx);
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  rotate: -3deg;
+}
+.kit__stamp span {
+  color: var(--cream);
+}
+
+/* compartments ------------------------------------------------------------ */
+.kit__bay {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-areas:
+    'keycap keycap keycap keycap keycap keycap keycap chip chip chip chip chip'
+    'sticker sticker sticker sticker sticker cartridge cartridge cartridge floppy floppy floppy floppy'
+    'label label label label label label label label label label label label';
+  gap: 12px;
+}
+.tray {
+  --tray-bg: var(--cream);
+  --tray-fg: var(--ink);
+  --focus: var(--cobalt);
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px 14px 12px;
+  background-color: var(--tray-bg);
+  color: var(--tray-fg);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 5px 0 rgba(22, 19, 28, 0.22),
+    inset 0 0 0 2px rgba(22, 19, 28, 0.35);
+}
+.tray--keycap {
+  grid-area: keycap;
+}
+.tray--sticker {
+  grid-area: sticker;
+}
+.tray--cartridge {
+  grid-area: cartridge;
+}
+.tray--floppy {
+  grid-area: floppy;
+}
+.tray--chip {
+  grid-area: chip;
+}
+.tray--label {
+  grid-area: label;
+}
+
+.tray__title {
+  justify-self: start;
+  padding: 3px 12px 2px;
+  background: rgba(255, 248, 234, 0.92);
+  color: var(--ink);
+  font-family: var(--font-sfx);
+  font-weight: 400;
+  font-size: 0.98rem;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  /* masking tape */
+  clip-path: polygon(2% 0, 98% 6%, 100% 100%, 0 92%);
+  rotate: -1.5deg;
+}
+.tray__items {
+  align-self: center;
+  min-width: 0;
+}
+
+/* the label-maker readout at the foot of each compartment */
+.tray__readout {
+  min-height: 2.3rem;
+  padding: 5px 12px 6px;
+  background: var(--cream);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  box-shadow: 3px 3px 0 rgba(22, 19, 28, 0.5);
+}
+.tray__line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 10px;
+  line-height: 1.25;
+}
+.tray__line strong {
+  font-family: var(--font-sfx);
+  font-weight: 400;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+}
+.tray__title-text {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--teal-deep);
+}
+.tray__line--note {
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--ink-mute);
+}
+.tray__more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s var(--ease-out);
+}
+.tray__more > p {
+  min-height: 0;
+  overflow: hidden;
+  font-size: 0.86rem;
+  line-height: 1.4;
+}
+.tray__more.is-open {
+  grid-template-rows: 1fr;
+}
+.tray__more.is-open > p {
+  padding-top: 2px;
+}
+
+/* shared gadget behaviour --------------------------------------------------- */
+.gz {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    translate 0.25s var(--ease-pop),
+    rotate 0.3s var(--ease-pop);
+}
+.gz:focus-visible {
+  outline: 3px dashed var(--focus);
+  outline-offset: 6px;
+  border-radius: 8px;
+}
+/* picked: a little star pinned to the gadget */
+.gz::after {
+  content: '★';
+  position: absolute;
+  z-index: 4;
+  top: -12px;
+  left: -10px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  background: var(--yellow);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  font-size: 0.85rem;
+  line-height: 1;
+  scale: 0;
+  transition: scale 0.3s var(--ease-pop);
+  pointer-events: none;
+}
+.gz.is-picked::after {
+  scale: 1;
+}
+.gz__learning {
+  position: absolute;
+  z-index: 3;
+  top: -12px;
+  right: -14px;
+  padding: 0 6px;
+  background: var(--yellow);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  rotate: 8deg;
+  pointer-events: none;
+}
+
+/* 1 · keycaps (languages) ------------------------------------------------- */
+.tray--keycap {
+  --tray-bg: var(--ink-soft);
+  --tray-fg: var(--cream);
+  --focus: var(--yellow);
+  background-image: linear-gradient(rgba(255, 248, 234, 0.05) 1px, transparent 1px);
+  background-size: 100% 12px;
+}
+.tray--keycap .tray__items {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 12px 10px;
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+}
+.tray--keycap .tray__slot {
+  grid-column: span 2;
+}
+/* the second row is offset half a key, like a real keyboard */
+.tray--keycap .tray__slot:nth-child(5) {
+  grid-column: 2 / span 2;
+}
+.gz--keycap {
+  width: 100%;
+  aspect-ratio: 1.3;
+  background: color-mix(in srgb, var(--c) 78%, var(--ink));
+  border: var(--line) solid var(--ink);
+  border-radius: 11px;
+  box-shadow: 0 6px 0 var(--ink);
+  transition:
+    translate 0.12s ease-out,
+    box-shadow 0.12s ease-out;
+}
+.gz__cap {
+  position: absolute;
+  inset: 3px 6px 9px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3px 7px 4px;
+  background: linear-gradient(var(--cream), #efe3cc);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 7px;
+  text-align: left;
+}
+.gz--keycap .gz__glyph {
+  font-family: var(--font-sfx);
+  font-size: 1.45rem;
+  line-height: 1;
+}
+.gz--keycap .gz__name {
+  align-self: flex-end;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.gz--keycap.is-picked .gz__cap {
+  background: linear-gradient(var(--yellow), #f5c21f);
+}
+
+/* 2 · stickers (frontend) ------------------------------------------------- */
+.tray--sticker {
+  --tray-bg: #fffdf7;
+  background-image:
+    linear-gradient(rgba(36, 69, 210, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(36, 69, 210, 0.07) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+.tray--sticker .tray__items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px 12px;
+  padding: 8px 4px;
+}
+.gz--sticker {
+  --r: -6deg;
+  rotate: var(--r);
+}
+.tray__slot:nth-child(2) .gz--sticker {
+  --r: 5deg;
+}
+.tray__slot:nth-child(3) .gz--sticker {
+  --r: -2deg;
+}
+.tray__slot:nth-child(4) .gz--sticker {
+  --r: 8deg;
+}
+.tray__slot:nth-child(5) .gz--sticker {
+  --r: -9deg;
+}
+.gz__face {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 2px;
+  width: 84px;
+  height: 74px;
+  padding: 4px 8px;
+  background: var(--c);
+  color: var(--fg, var(--ink));
+  border: var(--line) solid var(--ink);
+  /* the white die-cut edge, then the printed shadow */
+  box-shadow:
+    0 0 0 5px #fff,
+    0 0 0 7px rgba(22, 19, 28, 0.2),
+    4px 5px 0 7px rgba(22, 19, 28, 0.16);
+  transition: box-shadow 0.25s var(--ease-out);
+}
+/* every sticker is cut to a different shape */
+.tray__slot:nth-child(1) .gz__face {
+  border-radius: 52% 48% 44% 56% / 58% 50% 50% 42%;
+}
+.tray__slot:nth-child(2) .gz__face {
+  width: 112px;
+  height: 58px;
+  border-radius: 999px;
+}
+.tray__slot:nth-child(3) .gz__face {
+  border-radius: 16px;
+}
+.tray__slot:nth-child(4) .gz__face {
+  width: 100px;
+  border-radius: 46% 10px 46% 10px;
+}
+.tray__slot:nth-child(5) .gz__face {
+  width: 74px;
+  height: 80px;
+  border-radius: 34% 66% 62% 38% / 36% 38% 62% 64%;
+}
+.gz--sticker .gz__glyph {
+  font-family: var(--font-sfx);
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.gz--sticker .gz__name {
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* 3 · cartridges (backend) ------------------------------------------------ */
+.tray--cartridge {
+  --tray-bg: var(--teal);
+  --tray-fg: var(--cream);
+  --focus: var(--yellow);
+}
+.tray--cartridge .tray__items {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 14px;
+  padding-top: 26px;
+  overflow: hidden;
+}
+/* the slot they sit in: covers the bottom of each cartridge */
+.tray--cartridge .tray__items::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  left: 4%;
+  right: 4%;
+  bottom: 0;
+  height: 34px;
+  background:
+    linear-gradient(rgba(255, 248, 234, 0.12), transparent 30%),
+    var(--ink);
+  border-radius: 8px 8px 0 0;
+  pointer-events: none;
+}
+.gz--cartridge .gz__shell {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 6px;
+  width: 86px;
+  height: 122px;
+  padding: 7px 8px 40px;
+  background: linear-gradient(90deg, #d9d0c2, #c7bdad);
+  color: var(--ink);
+  border: var(--line) solid var(--ink);
+  border-radius: 9px 9px 4px 4px;
+}
+.gz__grip {
+  height: 12px;
+  margin-inline: 6px;
+  background: repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 7px);
+  opacity: 0.6;
+}
+.gz--cartridge .gz__label {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 2px;
+  background: var(--c);
+  color: var(--fg, var(--cream));
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+}
+.gz--cartridge .gz__glyph {
+  font-family: var(--font-sfx);
+  font-size: 1.45rem;
+  line-height: 1;
+}
+.gz--cartridge .gz__name {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.gz--cartridge {
+  translate: 0 0;
+}
+
+/* 4 · floppy disks (data & databases) ------------------------------------- */
+.tray--floppy {
+  --tray-bg: var(--pink);
+  background-image: var(--halftone-ink);
+  background-size: 12px 12px;
+  background-blend-mode: soft-light;
+}
+.tray--floppy .tray__items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+.tray--floppy .tray__slot:nth-child(1) .gz--floppy {
+  rotate: -5deg;
+}
+.tray--floppy .tray__slot:nth-child(2) .gz--floppy {
+  rotate: 3deg;
+}
+.tray--floppy .tray__slot:nth-child(3) .gz--floppy {
+  rotate: -2deg;
+}
+.gz--floppy .gz__shell {
+  position: relative;
+  display: block;
+  width: 82px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--c);
+  border: var(--line) solid var(--ink);
+  border-radius: 6px;
+}
+/* the media window the shutter hides */
+.gz--floppy .gz__shell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 30%;
+  width: 32%;
+  height: 34%;
+  background: #2b2633;
+  border: 2px solid var(--ink);
+  border-top: 0;
+}
+/* the chamfered corner */
+.gz--floppy .gz__shell::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(
+    45deg,
+    transparent 0 calc(50% - 1.5px),
+    var(--ink) calc(50% - 1.5px) calc(50% + 1.5px),
+    var(--pink) calc(50% + 1.5px)
+  );
+}
+.gz__shutter {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 18%;
+  width: 50%;
+  height: 38%;
+  background:
+    linear-gradient(90deg, transparent 58%, #2b2633 58% 78%, transparent 78%) 0 4px / 100% 60% no-repeat,
+    linear-gradient(#e6e2da, #b9b4ab);
+  border: 2px solid var(--ink);
+  border-top: 0;
+  transition: translate 0.35s var(--ease-pop);
+}
+.gz--floppy .gz__label {
+  position: absolute;
+  left: 11%;
+  right: 11%;
+  bottom: 0;
+  height: 46%;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(var(--red) 0 4px, transparent 4px),
+    repeating-linear-gradient(transparent 0 8px, rgba(36, 69, 210, 0.22) 8px 9px),
+    var(--cream);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-bottom: 0;
+  border-radius: 3px 3px 0 0;
+}
+.gz--floppy .gz__name {
+  padding: 0 3px;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 0.85;
+  text-align: center;
+}
+
+/* 5 · microchips (AI / ML) ------------------------------------------------ */
+.tray--chip {
+  --tray-bg: var(--cobalt-deep);
+  --tray-fg: var(--cream);
+  --focus: var(--yellow);
+  /* circuit-board traces */
+  background-image:
+    linear-gradient(90deg, transparent 47%, rgba(143, 208, 196, 0.16) 47% 49%, transparent 49%),
+    linear-gradient(transparent 62%, rgba(143, 208, 196, 0.16) 62% 64%, transparent 64%);
+  background-size: 64px 64px;
+}
+.tray--chip .tray__items {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px 10px;
+  padding: 10px 0 4px;
+}
+.gz--chip {
+  /* pins (z-index -1) tuck under the die but stay above the tray */
+  isolation: isolate;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.gz__die {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  aspect-ratio: 1;
+  background: #1d1a24;
+  color: var(--cream);
+  border: var(--line) solid var(--ink);
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 3px rgba(255, 248, 234, 0.08);
+}
+/* pins, left/right and top/bottom */
+.gz__die::before,
+.gz__die::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+}
+.gz__die::before {
+  inset: 9px -11px;
+  background: repeating-linear-gradient(#d9d2c3 0 4px, transparent 4px 9px);
+}
+.gz__die::after {
+  inset: -11px 9px;
+  background: repeating-linear-gradient(90deg, #d9d2c3 0 4px, transparent 4px 9px);
+}
+.gz--chip .gz__glyph {
+  font-family: var(--font-sfx);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+.gz__led {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 8px;
+  height: 8px;
+  background: var(--c);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.4);
+}
+.gz--chip .gz__name {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  text-align: center;
+}
+.gz--chip.is-picked .gz__led {
+  background: var(--yellow);
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.4),
+    0 0 10px 3px var(--yellow);
+}
+
+/* 6 · label-maker tape (developer tools & hardware) ------------------------ */
+.tray--label {
+  --tray-bg: #e8c58c;
+  /* kraft paper with a ruler along the top */
+  background-image:
+    repeating-linear-gradient(90deg, rgba(22, 19, 28, 0.45) 0 2px, transparent 2px 12px),
+    repeating-linear-gradient(90deg, rgba(22, 19, 28, 0.45) 0 2px, transparent 2px 60px),
+    radial-gradient(circle, rgba(22, 19, 28, 0.08) 1px, transparent 1.5px);
+  background-size:
+    100% 8px,
+    100% 16px,
+    7px 7px;
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-position: 14px 0, 14px 0, 0 0;
+}
+.tray--label .tray__items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px 14px;
+  padding: 4px 0;
+}
+.tray--label .tray__slot {
+  filter: drop-shadow(3px 3px 0 var(--ink));
+  transition: filter 0.25s var(--ease-out);
+}
+.gz--label {
+  rotate: -2deg;
+}
+.tray--label .tray__slot:nth-child(even) .gz--label {
+  rotate: 2.5deg;
+}
+.tray--label .tray__slot:nth-child(3n) .gz--label {
+  rotate: -3.5deg;
+}
+.gz__tape {
+  display: block;
+  padding: 8px 20px 7px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.2), transparent 45%, rgba(0, 0, 0, 0.14)),
+    var(--c);
+  color: var(--fg, var(--cream));
+  font-family: var(--font-head);
+  font-size: 1rem;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  /* embossed letters */
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.35),
+    0 -1px 0 rgba(255, 255, 255, 0.25);
+  /* cut with scissors, a little crooked */
+  clip-path: polygon(0 4%, 100% 0, 97% 50%, 100% 100%, 0 96%, 3% 50%);
+}
+
+/* hover reactions: one per kind, nothing over the top ---------------------- */
+@media (hover: hover) {
+  .gz--keycap:hover {
+    translate: 0 3px;
+    box-shadow: 0 3px 0 var(--ink);
+  }
+  .gz--sticker:hover {
+    translate: 0 -5px;
+    rotate: calc(var(--r) * 0.3);
+  }
+  .gz--sticker:hover .gz__face {
+    box-shadow:
+      0 0 0 5px #fff,
+      0 0 0 7px rgba(22, 19, 28, 0.2),
+      9px 12px 0 7px rgba(22, 19, 28, 0.2);
+  }
+  .gz--cartridge:hover {
+    translate: 0 -14px;
+  }
+  .gz--floppy:hover {
+    rotate: 0deg;
+  }
+  .gz--floppy:hover .gz__shutter {
+    translate: 42% 0;
+  }
+  .gz--chip:hover {
+    translate: 0 -3px;
+  }
+  .gz--chip:hover .gz__led {
+    animation: gz-blink 0.5s steps(2, jump-none) infinite;
+  }
+  .tray--label .tray__slot:hover {
+    filter: drop-shadow(5px 6px 0 var(--ink));
+  }
+  .gz--label:hover {
+    translate: 0 -3px;
+    rotate: 0deg;
+  }
+}
+/* picked states mirror the hovers, so touch devices see them too */
+.gz--keycap.is-picked {
+  translate: 0 5px;
+  box-shadow: 0 1px 0 var(--ink);
+}
+.gz--sticker.is-picked {
+  translate: 0 -5px;
+  rotate: 0deg;
+}
+.gz--cartridge.is-picked {
+  translate: 0 -20px;
+}
+.gz--floppy.is-picked {
+  rotate: 0deg;
+}
+.gz--floppy.is-picked .gz__shutter {
+  translate: 42% 0;
+}
+.gz--label.is-picked {
+  translate: 0 -3px;
+  rotate: 0deg;
+}
+@keyframes gz-blink {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+
+/* responsive --------------------------------------------------------------- */
+@media (max-width: 1099px) {
+  .kit__bay {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-areas:
+      'keycap keycap keycap keycap keycap keycap'
+      'sticker sticker sticker chip chip chip'
+      'cartridge cartridge floppy floppy floppy floppy'
+      'label label label label label label';
+  }
+}
+@media (max-width: 699px) {
+  .kit {
+    margin-top: 40px;
+    padding: 10px;
+    border-radius: 18px;
+  }
+  .kit__lid {
+    min-height: 0;
+    padding: 0 4px 12px 96px;
+  }
+  .kit__owner {
+    top: -34px;
+    width: 86px;
+  }
+  .kit__hello .bubble__body {
+    font-size: 0.92rem;
+  }
+  .kit__stamp {
+    display: none;
+  }
+  .kit__bay {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      'keycap keycap'
+      'sticker sticker'
+      'cartridge chip'
+      'floppy floppy'
+      'label label';
+    gap: 10px;
+  }
+  .tray {
+    padding: 10px 10px 10px;
+    gap: 8px;
+  }
+  .gz--keycap .gz__glyph {
+    font-size: 1.15rem;
+  }
+  .gz--keycap .gz__name {
+    font-size: 0.56rem;
+  }
+  .gz__cap {
+    padding: 2px 5px 3px;
+  }
+  .gz__face {
+    width: 70px;
+    height: 62px;
+  }
+  .tray__slot:nth-child(2) .gz__face {
+    width: 96px;
+    height: 50px;
+  }
+  .tray__slot:nth-child(4) .gz__face {
+    width: 86px;
+  }
+  .tray__slot:nth-child(5) .gz__face {
+    width: 64px;
+    height: 68px;
+  }
+  .gz--sticker .gz__glyph {
+    font-size: 1.3rem;
+  }
+  .gz--sticker .gz__name {
+    font-size: 0.56rem;
+  }
+  .tray--cartridge .tray__items {
+    gap: 8px;
+  }
+  .gz--cartridge .gz__shell {
+    width: 62px;
+    height: 104px;
+    padding: 6px 5px 38px;
+  }
+  .gz--cartridge .gz__glyph {
+    font-size: 1.15rem;
+  }
+  .gz--cartridge .gz__name {
+    font-size: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+  .tray--chip .tray__items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 6px;
+  }
+  .gz__die {
+    width: 46px;
+  }
+  .gz--chip .gz__glyph {
+    font-size: 1.05rem;
+  }
+  .gz--chip .gz__name {
+    font-size: 0.58rem;
+  }
+  .gz--floppy .gz__shell {
+    width: 72px;
+  }
+  .gz__tape {
+    padding: 7px 14px 6px;
+    font-size: 0.86rem;
+    letter-spacing: 0.12em;
+  }
+  .tray--label .tray__items {
+    gap: 10px;
+  }
+  .tray__line strong {
+    font-size: 1rem;
+  }
+  .tray__title-text,
+  .tray__line--note {
+    font-size: 1.05rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gz,
+  .gz::after,
+  .gz__shutter,
+  .gz__face,
+  .tray__more,
+  .tray--label .tray__slot {
+    transition: none;
+  }
+  .gz--chip:hover .gz__led {
+    animation: none;
+  }
+}

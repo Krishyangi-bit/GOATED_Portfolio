@@ -13,9 +13,9 @@ import { ComicButton } from '../components/ComicButton';
 import { Burst } from '../components/Burst';
 import { RaspberryPi } from '../components/RaspberryPi';
 import { SpeedPeek } from '../components/SpeedPeek';
-import { Doodle, IconChip, IconCode, IconEye, IconGithub, IconLinkedin } from '../components/Doodles';
+import { Interests } from '../components/Interests';
+import { IconChip, IconCode, IconEye, IconGithub, IconLinkedin } from '../components/Doodles';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import { useSound } from '../sound/SoundController';
 import './About.css';
 
 const WORLD_ICONS = { software: <IconCode />, ai: <IconEye />, hardware: <IconChip /> } as const;
@@ -35,10 +35,6 @@ function TornEdge() {
   );
 }
 
-function Placeholder({ children }: { children: string }) {
-  return <span className="placeholder">{children}</span>;
-}
-
 /**
  * ACT 02 — THE ORIGIN STORY
  * A page of six panels read top-left to bottom-right. Each panel draws itself,
@@ -47,7 +43,6 @@ function Placeholder({ children }: { children: string }) {
 export function About() {
   const root = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const { play } = useSound();
 
   // per-panel character moods: each starts neutral and reacts on reveal
   const [p2, setP2] = useState<Mood>('idle');
@@ -60,6 +55,7 @@ export function About() {
   const endSaid = useRef(false);
 
   const edu = ORIGIN.beginning.education;
+  const signOff = { text: ORIGIN.continued.bubble, mood: 'greeting' as const };
 
   // --- splash heading + scroll-driven pieces -------------------------------
   useGSAP(
@@ -86,37 +82,47 @@ export function About() {
         );
       }
 
-      // the evolution track fills as you read it
-      const evo = q('.evo')[0];
-      const nodes = q('.evo__node');
-      if (evo) {
+      // the evolution track: ink runs dot to dot, and each power lights up
+      // one by one as the ink reaches it
+      const evo = q('.evo')[0] as HTMLElement | undefined;
+      const nodes = q('.evo__node') as HTMLElement[];
+      if (evo && nodes.length) {
+        let marks: number[] = [];
+        const measure = () => {
+          const first = nodes[0].offsetTop;
+          const span = Math.max(1, nodes[nodes.length - 1].offsetTop - first);
+          evo.style.setProperty('--evo-len', `${span}px`);
+          marks = nodes.map((n) => (n.offsetTop - first) / span);
+        };
+        const paint = (p: number) => {
+          evo.style.setProperty('--evo-progress', String(p));
+          nodes.forEach((n, i) => n.classList.toggle('is-on', p > 0 && p >= marks[i] - 0.02));
+        };
+        measure();
         ScrollTrigger.create({
           trigger: evo,
-          start: 'top 78%',
-          end: 'bottom 60%',
+          start: 'top 70%',
+          end: 'bottom 62%',
           scrub: reduced ? false : 0.4,
-          onUpdate: (self) => {
-            const p = reduced ? 1 : self.progress;
-            evo.style.setProperty('--evo-progress', String(p));
-            nodes.forEach((n, i) => n.classList.toggle('is-on', p >= i / Math.max(1, nodes.length - 1) - 0.04));
-          },
+          onRefresh: measure,
+          onUpdate: (self) => paint(reduced ? 1 : self.progress),
           onToggle: (self) => {
-            if (reduced && self.isActive) {
-              evo.style.setProperty('--evo-progress', '1');
-              nodes.forEach((n) => n.classList.add('is-on'));
-            }
+            if (reduced && self.isActive) paint(1);
           },
         });
       }
 
-      // reaching the end of the issue
+      // reaching the last panel of the origin story
       ScrollTrigger.create({
-        trigger: q('.origin__end')[0],
-        start: 'top 92%',
+        trigger: q('.p6')[0],
+        start: 'bottom 88%',
         onEnter: () => {
           if (finaleShown.current && !endSaid.current) {
             endSaid.current = true;
-            window.setTimeout(() => finale.say(DIALOGUE.theEnd, { hold: 5200 }), 900);
+            window.setTimeout(() => {
+              finale.say(DIALOGUE.theEnd, { hold: 5200, stay: true });
+              window.setTimeout(() => finale.say(signOff, { hold: Infinity, stay: true }), 5400);
+            }, 900);
           }
         },
       });
@@ -141,7 +147,6 @@ export function About() {
 
   const fzzt = () => {
     setP4('surprised');
-    play('bam');
     window.setTimeout(() => p4Ref.current?.shake(), 120);
   };
 
@@ -152,7 +157,7 @@ export function About() {
 
   const continued = () => {
     finaleShown.current = true;
-    finale.say({ ...DIALOGUE.arrival, text: ORIGIN.continued.bubble, mood: 'greeting', action: 'wave' }, { hold: 9000, stay: true });
+    finale.say({ ...signOff, action: 'wave' }, { hold: Infinity, stay: true });
   };
 
   return (
@@ -205,19 +210,21 @@ export function About() {
             <p className="caption p1__line" data-reveal>
               {ORIGIN.beginning.lines[1]}
             </p>
-            <div className="p1__edu" data-reveal>
-              <span className="p1__edu-label">Education</span>
-              <span>
-                {edu.degree ?? <Placeholder>degree</Placeholder>}
-                {' · '}
-                {edu.institution ?? <Placeholder>college / university</Placeholder>}
-                {' · '}
-                {edu.years ?? <Placeholder>years</Placeholder>}
-              </span>
+            {/* education, styled as a student ID card */}
+            <div className="idcard" data-reveal>
+              <div className="idcard__strip">
+                <span>Education</span>
+                <span className="idcard__hole" aria-hidden="true" />
+              </div>
+              <div className="idcard__body">
+                <p className="idcard__degree">{edu.degree}</p>
+                <p className="idcard__school">{edu.institution}</p>
+              </div>
+              <span className="idcard__barcode" aria-hidden="true" />
             </div>
-          </div>
-          <div className="p1__bubble" data-pop>
-            <Bubble tail="top-right">{ORIGIN.beginning.motto}</Bubble>
+            <div className="p1__bubble" data-pop>
+              <Bubble tail="right">{ORIGIN.beginning.motto}</Bubble>
+            </div>
           </div>
         </ComicPanel>
 
@@ -235,28 +242,33 @@ export function About() {
             [0, 100],
           ]}
           onReveal={() => setP2('thinking')}
+          sfxRate={1.18}
         >
           <div className="p2__halo" aria-hidden="true" data-depth="0.3" />
           <h3 id="p2-h" className="sr-only">
             {ORIGIN.curiosity.title}
           </h3>
-          <div className="p2__thought" data-pop>
-            <Bubble variant="thought">{ORIGIN.curiosity.thought}</Bubble>
+          <div className="p2__top">
+            <div className="p2__thought" data-pop>
+              <Bubble variant="thought">{ORIGIN.curiosity.thought}</Bubble>
+            </div>
+            <p className="p2__caption caption" data-reveal>
+              {ORIGIN.curiosity.caption}
+            </p>
           </div>
-          <ul className="p2__worlds" aria-label="Three worlds she works across">
-            {ORIGIN.curiosity.worlds.map((w) => (
-              <li key={w.key} className={`p2__world p2__world--${w.key}`} data-pop>
-                <span className="p2__world-icon">{WORLD_ICONS[w.key as keyof typeof WORLD_ICONS]}</span>
-                {w.label}
-              </li>
-            ))}
-          </ul>
-          <div className="p2__char">
-            <Character mood={p2} preload={['mischief']} label="Krishyangi" sizes="(max-width: 639px) 70vw, 30vw" />
+          <div className="p2__stage">
+            <div className="p2__char">
+              <Character mood={p2} preload={['mischief']} label="Krishyangi" sizes="(max-width: 639px) 80vw, 30vw" />
+            </div>
+            <ul className="p2__worlds" aria-label="Three worlds she works across">
+              {ORIGIN.curiosity.worlds.map((w) => (
+                <li key={w.key} className={`p2__world p2__world--${w.key}`} data-pop>
+                  <span className="p2__world-icon">{WORLD_ICONS[w.key as keyof typeof WORLD_ICONS]}</span>
+                  {w.label}
+                </li>
+              ))}
+            </ul>
           </div>
-          <p className="p2__caption caption" data-reveal>
-            {ORIGIN.curiosity.caption}
-          </p>
         </ComicPanel>
 
         {/* PANEL 03 — THE FIRST LINE OF CODE ---------------------------------- */}
@@ -273,6 +285,7 @@ export function About() {
             [1, 98],
           ]}
           onReveal={typeTerminal}
+          sfxRate={0.86}
         >
           <div className="p3__grid" aria-hidden="true" />
           <h3 id="p3-h" className="caption p3__caption" data-reveal>
@@ -321,32 +334,34 @@ export function About() {
             [0, 96],
           ]}
           onReveal={fzzt}
+          sfx="zap"
         >
           <div className="p4__burst" aria-hidden="true" data-depth="0.35">
             <Burst text="" color="var(--yellow)" spikes={18} seed={9} />
           </div>
-          <h3 id="p4-h" className="caption caption--cream p4__setup" data-reveal>
-            {ORIGIN.firstBug.setup}
-          </h3>
-          <div className="p4__pi" data-pop>
-            <RaspberryPi />
-            <p className="p4__label hand" aria-hidden="true">
-              
+          <div className="p4__col">
+            <h3 id="p4-h" className="caption caption--cream p4__setup" data-reveal>
+              {ORIGIN.firstBug.setup}
+            </h3>
+            <div className="p4__pi" data-pop>
+              <RaspberryPi />
+              <span className="p4__sfx" data-sfx aria-hidden="true">
+                {ORIGIN.firstBug.sfx}
+              </span>
+            </div>
+            <p className="p4__label hand" aria-hidden="true" data-reveal>
               ↑ the missing voltage divider
             </p>
+            <p className="p4__moral caption" data-reveal>
+              {ORIGIN.firstBug.moral}
+            </p>
           </div>
-          <span className="p4__sfx" data-sfx aria-hidden="true">
-            {ORIGIN.firstBug.sfx}
-          </span>
           <div className="p4__char">
             <Character ref={p4Ref} mood={p4} preload={['confused']} label="Krishyangi" sizes="(max-width: 639px) 60vw, 26vw" />
           </div>
           <div className="p4__bubble" data-pop>
-            <Bubble tail="bottom-right">{ORIGIN.firstBug.bubble}</Bubble>
+            <Bubble tail="bottom-left">{ORIGIN.firstBug.bubble}</Bubble>
           </div>
-          <p className="p4__moral caption" data-reveal>
-            {ORIGIN.firstBug.moral}
-          </p>
         </ComicPanel>
 
         {/* PANEL 05 — THE EVOLUTION ------------------------------------------- */}
@@ -363,6 +378,7 @@ export function About() {
             [0.5, 98.5],
           ]}
           onReveal={levelUp}
+          sfx="boing"
         >
           <div className="p5__speed" aria-hidden="true" data-depth="0.2" />
           <div className="p5__head">
@@ -404,7 +420,7 @@ export function About() {
           className="pf"
           tone="tone-cream"
           from="left"
-          label="Classified — Character File"
+          label="Classified — Character Profile"
           headingId="pf-h"
           shape={[
             [0, 0],
@@ -412,19 +428,22 @@ export function About() {
             [98.6, 100],
             [1, 98.4],
           ]}
+          sfxRate={1.3}
         >
           <div className="file">
             <div className="file__head" data-reveal>
               <img className="file__photo" src="/character/mischief-sm.webp" alt="Krishyangi, smirking" width={416} height={589} loading="lazy" />
-              <div>
+              <div className="file__id">
+                <p className="file__kicker">{ORIGIN.file.title}</p>
                 <h3 id="pf-h" className="file__name">
                   {SITE.fullName}
                 </h3>
                 <p className="file__role">Protagonist · Issue {SITE.issue}</p>
               </div>
-              <span className="file__stamp" data-sfx aria-hidden="true">
-                Approved
-              </span>
+              <p className="file__age" data-sfx>
+                <span>Age</span>
+                <strong>{ORIGIN.file.age}</strong>
+              </p>
             </div>
             <dl className="file__rows">
               {ORIGIN.file.rows.map((r) => (
@@ -433,22 +452,17 @@ export function About() {
                   <dd>{r.v}</dd>
                 </div>
               ))}
-              <div className="file__row" data-reveal>
-                <dt>Off-duty interests</dt>
-                <dd>
-                  {ORIGIN.file.interests?.join(' · ') ?? <Placeholder>add hobbies &amp; interests</Placeholder>}
-                </dd>
-              </div>
             </dl>
+            <Interests />
           </div>
         </ComicPanel>
 
-        {/* PANEL 06 — TO BE CONTINUED ---------------------------------------- */}
+        {/* PANEL 06 — WHAT'S NEXT -------------------------------------------- */}
         <ComicPanel
           className="p6"
           tone="tone-pink"
           from="right"
-          label="Panel 06 — To Be Continued"
+          label={`Panel 06 — ${ORIGIN.continued.title}`}
           headingId="p6-h"
           shape={[
             [2, 0],
@@ -457,6 +471,7 @@ export function About() {
             [0, 98],
           ]}
           onReveal={continued}
+          sfxRate={1.06}
         >
           <div className="p6__rays" aria-hidden="true" data-depth="0.2" />
           <div className="p6__bubble">
@@ -471,29 +486,21 @@ export function About() {
               sizes="(max-width: 639px) 60vw, 26vw"
             />
           </div>
-          <h3 id="p6-h" className="p6__tbc" data-sfx>
-            To be continued…
-          </h3>
-          <div className="p6__links" data-reveal>
-            <ComicButton variant="ink" href={SITE.links.github} external icon={<IconGithub />} sfx="CLICK!">
-              GitHub
-            </ComicButton>
-            <ComicButton variant="secondary" href={SITE.links.linkedin} external icon={<IconLinkedin />} sfx="POP!">
-              LinkedIn
-            </ComicButton>
+          <div className="p6__end">
+            <h3 id="p6-h" className="sr-only">
+              {ORIGIN.continued.title}
+            </h3>
+            <div className="p6__links" data-reveal>
+              <ComicButton variant="ink" href={SITE.links.github} external icon={<IconGithub />} sfx="CLICK!">
+                GitHub
+              </ComicButton>
+              <ComicButton variant="secondary" href={SITE.links.linkedin} external icon={<IconLinkedin />} sfx="BOINK!">
+                LinkedIn
+              </ComicButton>
+            </div>
           </div>
         </ComicPanel>
       </div>
-
-      <footer className="origin__end">
-        <Doodle kind="swoosh" className="origin__end-swoosh" />
-        <p>
-          <strong>End of Issue {SITE.issue}.</strong> More chapters are being inked.
-        </p>
-        <p className="origin__end-copy">
-          © {new Date().getFullYear()} {SITE.fullName} · Hand-made with React, GSAP &amp; a lot of ink.
-        </p>
-      </footer>
 
       <SpeedPeek within="#origin" />
     </section>

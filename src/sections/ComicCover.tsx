@@ -32,7 +32,7 @@ export function ComicCover({ onOpen, onDone }: Props) {
         if (opened.current) return;
         opened.current = true;
         writeFlag('session', COVER_SEEN_KEY, '1');
-        play('page');
+        play('ratchet');
         onOpen();
       };
 

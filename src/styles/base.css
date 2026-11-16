@@ -105,6 +105,19 @@ ol {
   transform: none;
 }
 
+/* reading progress: a line of ink along the top edge (see App.tsx) */
+.reading-ink {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 62;
+  height: 5px;
+  background: var(--orange);
+  border-bottom: 2px solid var(--ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
 /* shared comic primitives ------------------------------------------------ */
 
 /* narration / caption box */

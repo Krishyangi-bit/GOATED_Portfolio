@@ -6,7 +6,7 @@ import type { Line } from '../content/dialogue';
 export type Speech = { id: number; text: string } | null;
 
 type SayOptions = {
-  /** ms the bubble stays up; defaults to reading time */
+  /** ms the bubble stays up; defaults to reading time; Infinity = until replaced */
   hold?: number;
   /** mood to return to once the line is finished */
   rest?: Mood;
@@ -45,6 +45,7 @@ export function useCharacterController(initial: Mood = 'idle', restMood: Mood = 
       });
     }
     const hold = opts.hold ?? Math.min(6500, 2200 + line.text.length * 48);
+    if (hold === Infinity) return; // stays until the next line replaces it
     timer.current = window.setTimeout(() => {
       setSpeech(null);
       if (!opts.stay) setMood(opts.rest ?? rest.current);

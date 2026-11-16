@@ -1,0 +1,333 @@
+/* ==========================================================================
+   ISSUE #03 — CHARACTER DEVELOPMENT
+   Default: a vertical story (mobile, tablet, reduced motion).
+   .is-pinned (desktop): the page pins and the world slides sideways past her.
+   ========================================================================== */
+
+.chapter--journey {
+  --page-bg: var(--teal-deep);
+  --splash-accent: var(--yellow);
+  padding-bottom: clamp(56px, 6vw, 96px);
+  background-image: radial-gradient(circle, rgba(255, 248, 234, 0.07) 1.2px, transparent 1.8px);
+  background-size: 12px 12px;
+}
+
+/* ---- vertical story (default) ------------------------------------------ */
+.journey__track {
+  display: grid;
+  gap: 56px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.scene {
+  position: relative;
+}
+.scene__art {
+  overflow: hidden;
+  aspect-ratio: 16 / 7;
+  border: var(--line-bold) solid var(--ink);
+  border-radius: 6px;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.45);
+}
+.scene-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.journey__hud,
+.journey__traveler {
+  display: none;
+}
+
+/* ---- the chapter card ------------------------------------------------- */
+.ch {
+  position: relative;
+  z-index: 2;
+  margin: -48px 18px 0;
+  padding: 22px 24px 24px;
+  background: var(--cream);
+  color: var(--ink);
+  border: var(--line) solid var(--ink);
+  box-shadow: 7px 7px 0 var(--ink);
+  rotate: -0.5deg;
+}
+.scene:nth-child(even) .ch {
+  rotate: 0.5deg;
+}
+.ch__num {
+  display: inline-block;
+  padding: 3px 10px;
+  background: var(--ink);
+  color: var(--yellow);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.ch__title {
+  margin-top: 8px;
+  font-family: var(--font-sfx);
+  font-weight: 400;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 0.95;
+  letter-spacing: 0.03em;
+  color: var(--orange);
+  -webkit-text-stroke: 0.04em var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 0.05em 0.05em 0 var(--ink);
+}
+.ch__line {
+  margin: 14px 0 6px;
+}
+.ch__line .bubble {
+  max-width: 100%;
+}
+.ch__line .bubble__body {
+  text-align: left;
+  border-radius: 22px;
+  font-size: 0.92rem;
+}
+.ch__meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 18px;
+  margin: 16px 0 6px;
+  padding: 12px 0;
+  border-block: 2px dashed rgba(22, 19, 28, 0.25);
+}
+.ch__meta dt {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--orange-deep);
+}
+.ch__meta dd {
+  margin: 2px 0 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.ch__meta .ch__org {
+  font-family: var(--font-head);
+  font-weight: 400;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+}
+.ch__field {
+  margin-top: 12px;
+}
+.ch__field h4 {
+  margin: 0 0 6px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teal-deep);
+}
+.ch__list {
+  display: grid;
+  gap: 5px;
+}
+.ch__list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+.ch__list li::before {
+  content: '▸';
+  position: absolute;
+  left: 2px;
+  color: var(--orange-deep);
+}
+.ch__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.ch__chips li {
+  padding: 3px 10px;
+  background: var(--teal);
+  color: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.ch__cta {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: var(--orange);
+  color: var(--ink);
+  border: var(--line) solid var(--ink);
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 var(--ink);
+  font-family: var(--font-sfx);
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: transform 0.2s var(--ease-pop);
+}
+.ch__cta:hover {
+  transform: translate(-2px, -2px);
+}
+
+/* ==========================================================================
+   Desktop: pinned horizontal journey
+   ========================================================================== */
+.journey.is-pinned {
+  margin-inline: calc(-1 * var(--side));
+  height: 100svh;
+}
+.journey.is-pinned .journey__viewport {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-block: var(--line-bold) solid var(--ink);
+}
+.journey.is-pinned .journey__track {
+  display: flex;
+  gap: 0;
+  max-width: none;
+  width: max-content;
+  height: 100%;
+  margin: 0;
+  will-change: transform;
+}
+.journey.is-pinned .scene {
+  flex: none;
+  width: 100vw;
+  height: 100%;
+  border-right: 10px solid var(--ink);
+}
+.journey.is-pinned .scene__art {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.journey.is-pinned .ch {
+  position: absolute;
+  top: calc(var(--nav-h) + 20px);
+  right: max(5vw, calc((100vw - 1280px) / 2));
+  width: min(520px, 44vw);
+  max-height: calc(100% - var(--nav-h) - 120px);
+  margin: 0;
+  overflow: auto;
+}
+/* her lines are spoken by the travelling character instead */
+.journey.is-pinned .ch__line {
+  display: none;
+}
+
+.journey.is-pinned .journey__traveler {
+  display: block;
+  position: absolute;
+  z-index: 5;
+  left: max(4vw, calc((100vw - 1280px) / 2));
+  bottom: 64px;
+  height: min(60svh, 540px);
+  aspect-ratio: 743 / 1052;
+  pointer-events: none;
+}
+.journey__walker,
+.journey__walker .char {
+  width: 100%;
+  height: 100%;
+}
+.journey__bubble {
+  position: absolute;
+  left: 40%;
+  bottom: calc(100% - 4%);
+  width: max-content;
+  max-width: min(20rem, 30vw);
+}
+
+.journey.is-pinned .journey__hud {
+  display: flex;
+  position: absolute;
+  z-index: 4;
+  left: max(4vw, calc((100vw - 1280px) / 2));
+  right: max(4vw, calc((100vw - 1280px) / 2));
+  bottom: 20px;
+  align-items: center;
+}
+.journey__road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 8px;
+  margin-top: -4px;
+  background: rgba(22, 19, 28, 0.55);
+  border-radius: 8px;
+}
+.journey__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-radius: inherit;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.journey__steps {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.journey__step span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  background: var(--cream);
+  color: var(--ink);
+  border: var(--line) solid var(--ink);
+  border-radius: 50%;
+  font-family: var(--font-sfx);
+  font-size: 1rem;
+  transition:
+    background-color 0.3s,
+    scale 0.4s var(--ease-pop);
+}
+.journey__step.is-on span {
+  background: var(--yellow);
+  scale: 1.2;
+}
+
+/* sparkles twinkle in the ambassador scene */
+.scene-art__spark {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: scene-twinkle 2.4s ease-in-out infinite alternate;
+}
+.scene-art__spark:nth-of-type(2n) {
+  animation-delay: -1.2s;
+}
+@keyframes scene-twinkle {
+  to {
+    scale: 0.82;
+    rotate: 12deg;
+  }
+}
+
+@media (max-width: 639px) {
+  .journey__track {
+    gap: 44px;
+  }
+  .scene__art {
+    aspect-ratio: 4 / 3;
+  }
+  .ch {
+    margin: -36px 8px 0;
+    padding: 18px 16px 20px;
+  }
+  .ch__meta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

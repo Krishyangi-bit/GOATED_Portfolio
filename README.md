@@ -21,12 +21,12 @@ npm run build    # type-check + production build to dist/
 | `src/lib/motion.ts` | Shared easing/duration language. |
 | `assets-src/` | Original illustrations (untouched backups) + the asset pipeline scripts. |
 
-## Placeholders to fill in
+## Sound design
 
-- `src/content/origin.ts` → `beginning.education` (degree, institution, years)
-- `src/content/origin.ts` → `file.interests` (off-duty hobbies)
-
-They render as dashed **TODO** chips until set.
+Muted by default (toggle top-right; the choice is remembered). All sounds are synthesised in
+`src/sound/SoundController.tsx`, each tied to one kind of moment: **bonk / boing / whoops** when
+she reacts, **kapow** for BAM!, **thwack** as each panel lands, **zap** for the fried Pi,
+**ratchet** for page turns, **honk** when sound is switched on, **tick** for buttons.
 
 ## Adding a chapter later
 

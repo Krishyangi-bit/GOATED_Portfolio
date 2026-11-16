@@ -1,15 +1,25 @@
+/*
+ * Every panel is a size container: art inside is laid out in `cqw` (percent of
+ * the panel's width), so a panel keeps its composition at any viewport size.
+ * `--panel-min` gives a panel its proportions (e.g. calc(100cqw / 1.5)); the
+ * panel still grows if its text needs more room, so nothing is ever cut off.
+ */
 .panel {
   --panel-bg: var(--cream);
   --panel-fg: var(--ink);
   position: relative;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  container-type: inline-size;
   color: var(--panel-fg);
 }
 
 .panel__clip {
   position: relative;
   z-index: 1;
-  height: 100%;
+  flex: 1 0 auto;
+  min-height: var(--panel-min, 0px);
   overflow: hidden;
   background: var(--panel-bg);
   isolation: isolate;
@@ -26,6 +36,15 @@
 .panel__shadow {
   z-index: 0;
   transform: translate(9px, 9px);
+}
+/* the printed shadow deepens under the pointer, as if the panel lifts off the page */
+@media (hover: hover) and (min-width: 640px) {
+  .panel__shadow {
+    transition: transform 0.3s var(--ease-pop);
+  }
+  .panel:hover .panel__shadow {
+    transform: translate(14px, 14px);
+  }
 }
 .panel__shadow polygon {
   fill: var(--ink);

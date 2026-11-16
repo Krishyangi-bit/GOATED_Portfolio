@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ScrollTrigger } from '../lib/gsap';
 import { CHAPTERS, SITE, type ChapterId } from '../content/site';
 import { useSound } from '../sound/SoundController';
@@ -16,6 +16,15 @@ export function ChapterNav() {
   const [active, setActive] = useState<ChapterId>(CHAPTERS[0].id);
   const [solid, setSolid] = useState(false);
   const { enabled, toggle, play } = useSound();
+  const strip = useRef<HTMLOListElement>(null);
+
+  // on small screens the chips scroll sideways: keep the current chapter in view
+  useEffect(() => {
+    const ol = strip.current;
+    const tab = ol?.querySelector<HTMLElement>('[aria-current]');
+    if (!ol || !tab || ol.scrollWidth <= ol.clientWidth) return;
+    ol.scrollTo({ left: tab.offsetLeft - ol.clientWidth / 2 + tab.offsetWidth / 2, behavior: 'smooth' });
+  }, [active]);
 
   useEffect(() => {
     const triggers = CHAPTERS.slice(1).map((c, i) =>
@@ -39,7 +48,7 @@ export function ChapterNav() {
   return (
     <>
     <header className={`nav ${solid ? 'is-solid' : ''}`}>
-      <a className="nav__logo" href={`#${CHAPTERS[0].id}`} onClick={() => play('page')} aria-label="Krishyangi, back to the cover">
+      <a className="nav__logo" href={`#${CHAPTERS[0].id}`} onClick={() => play('ratchet')} aria-label="Krishyangi, back to the cover">
         <span className="nav__badge" aria-hidden="true">
           <svg viewBox="-6 -6 112 112">
             <polygon points={BADGE} />
@@ -68,14 +77,14 @@ export function ChapterNav() {
       </button>
     </header>
       <nav className={`nav__chapters ${solid ? 'is-solid' : ''}`} aria-label="Chapters">
-        <ol>
+        <ol ref={strip}>
           {CHAPTERS.map((c) => (
             <li key={c.id}>
               <a
                 href={`#${c.id}`}
                 className="nav__tab"
                 aria-current={active === c.id ? 'location' : undefined}
-                onClick={() => play('page')}
+                onClick={() => play('ratchet')}
               >
                 <span className="nav__num">{c.num}</span>
                 <span className="nav__label">{c.label}</span>

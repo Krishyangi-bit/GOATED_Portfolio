@@ -34,6 +34,8 @@ type Props = {
   /** Lean toward the cursor (mouse / trackpad only). */
   tilt?: boolean;
   blink?: boolean;
+  /** little music notes drifting out of her headphones */
+  music?: boolean;
   eager?: boolean;
   className?: string;
   style?: CSSProperties;
@@ -47,7 +49,7 @@ type Props = {
  *             └ breathe (looping CSS idle)
  *                └ pose layers (one per expression; crossfaded + scaled)
  *                   ├ base illustration
- *                   ├ blink overlay (idle / wave faces)
+ *                   ├ eyelid frames: half + closed (idle / wave faces)
  *                   └ hand layer (wave pose, rotates at the wrist)
  *
  * Expression changes are image crossfades. Because every pose shares one
@@ -63,6 +65,7 @@ export const Character = forwardRef<CharacterHandle, Props>(function Character(
     sizes = '(max-width: 640px) 80vw, 42vw',
     tilt = false,
     blink = true,
+    music = false,
     eager = false,
     className = '',
     style,
@@ -233,19 +236,23 @@ export const Character = forwardRef<CharacterHandle, Props>(function Character(
     };
     const doBlink = () => {
       if (!alive) return;
-      const lid = layers.current[shown.current]?.querySelector<HTMLElement>('.char__blink');
-      if (lid && visible.current) {
-        // the lid sweeps down (clip from the top), then lifts again
+      const layer = layers.current[shown.current];
+      const half = layer?.querySelector<HTMLElement>('.char__blink--half');
+      const closed = layer?.querySelector<HTMLElement>('.char__blink--closed');
+      if (half && closed && visible.current) {
+        // drawn-animation style: swap whole frames, never blend two eyes together
+        // open → half → closed → half → open  (~180ms)
+        const blinkOnce = (tl: gsap.core.Timeline, at: number) =>
+          tl
+            .set(half, { opacity: 1 }, at)
+            .set(closed, { opacity: 1 }, at + 0.045)
+            .set(half, { opacity: 0 }, at + 0.045)
+            .set(half, { opacity: 1 }, at + 0.13)
+            .set(closed, { opacity: 0 }, at + 0.13)
+            .set(half, { opacity: 0 }, at + 0.18);
         const tl = gsap.timeline();
-        tl.fromTo(lid, { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.07, ease: 'power1.in' })
-          .to(lid, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.11, ease: 'power1.out' }, '+=0.05');
-        if (Math.random() < 0.2) {
-          tl.to(lid, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.07, ease: 'power1.in' }, '+=0.12').to(
-            lid,
-            { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.11, ease: 'power1.out' },
-            '+=0.05',
-          );
-        }
+        blinkOnce(tl, 0);
+        if (Math.random() < 0.15) blinkOnce(tl, 0.32);
       }
       schedule();
     };
@@ -329,20 +336,22 @@ export const Character = forwardRef<CharacterHandle, Props>(function Character(
                   loading={eager || p === firstPose.current ? 'eager' : 'lazy'}
                   decoding="async"
                 />
-                {a.blink && (
-                  <img
-                    className="char__blink"
-                    src={a.blink.src}
-                    alt=""
-                    draggable={false}
-                    style={{
-                      left: pct(a.blink.box.x, CANVAS.w),
-                      top: pct(a.blink.box.y, CANVAS.h),
-                      width: pct(a.blink.box.w, CANVAS.w),
-                      height: pct(a.blink.box.h, CANVAS.h),
-                    }}
-                  />
-                )}
+                {a.blink &&
+                  (['half', 'closed'] as const).map((f) => (
+                    <img
+                      key={f}
+                      className={`char__blink char__blink--${f}`}
+                      src={a.blink![f]}
+                      alt=""
+                      draggable={false}
+                      style={{
+                        left: pct(a.blink!.box.x, CANVAS.w),
+                        top: pct(a.blink!.box.y, CANVAS.h),
+                        width: pct(a.blink!.box.w, CANVAS.w),
+                        height: pct(a.blink!.box.h, CANVAS.h),
+                      }}
+                    />
+                  ))}
                 {a.hand && (
                   <img
                     className="char__hand"
@@ -365,6 +374,13 @@ export const Character = forwardRef<CharacterHandle, Props>(function Character(
             );
           })}
         </div>
+        {music && (
+          <span className="char__notes" aria-hidden="true">
+            <i>♪</i>
+            <i>♫</i>
+            <i>♪</i>
+          </span>
+        )}
       </div>
     </div>
   );

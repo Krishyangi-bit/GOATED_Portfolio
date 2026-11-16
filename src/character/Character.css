@@ -79,5 +79,61 @@
 }
 
 .char__blink {
-  clip-path: inset(0% 0% 100% 0%);
+  opacity: 0;
+}
+
+/* music notes drifting out of the right headphone (canvas ≈ 80%, 32%) */
+.char__notes {
+  position: absolute;
+  left: 79%;
+  top: 30%;
+  width: 18%;
+  height: 20%;
+  pointer-events: none;
+}
+.char__notes i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-style: normal;
+  font-weight: 700;
+  font-size: clamp(14px, 1.7vw, 28px);
+  line-height: 1;
+  color: var(--teal-deep);
+  -webkit-text-stroke: 1px var(--cream);
+  paint-order: stroke fill;
+  opacity: 0;
+  animation: char-note 4.2s ease-out infinite;
+}
+.char__notes i:nth-child(2) {
+  animation-delay: 1.4s;
+  color: var(--orange-deep);
+}
+.char__notes i:nth-child(3) {
+  animation-delay: 2.8s;
+}
+@keyframes char-note {
+  0% {
+    opacity: 0;
+    translate: 0 0;
+    rotate: -12deg;
+    scale: 0.6;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    translate: 140% -260%;
+    rotate: 16deg;
+    scale: 1.1;
+  }
+}
+.char.is-paused .char__notes i {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .char__notes {
+    display: none;
+  }
 }

@@ -14,7 +14,7 @@ Steps (run in order, Python 3 + numpy, scipy, pillow, onnxruntime):
 
 1. `1_segment.py` – isnet-anime model (from `~/.rembg/models`) predicts a soft mask.
 2. `2_clean_to_ink.py` – flood-fills the checkerboard and the uneven white sticker border away so every pose is cut exactly at its ink outline.
-3. `3_blink_patch.py` – paints closed-eye overlays for the idle and wave faces.
+3. `3_blink_patch.py` – paints half-closed and closed eyelid frames for the idle and wave faces, directly on the exported canvas (run after step 4: `python 3_blink_patch.py public/character`).
 4. `4_export_stickers.py` – adds one uniform cream + ink sticker border and writes `public/character/*.webp` (full + `-sm`).
 5. `5_split_wave_hand.py` – splits the raised hand from the wave pose into its own layer so it can rotate at the wrist.
 

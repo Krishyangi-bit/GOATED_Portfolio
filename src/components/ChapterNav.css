@@ -142,14 +142,15 @@
   .nav__chapters ol {
     flex-direction: column;
     align-items: flex-end;
-    gap: 10px;
+    gap: 6px;
   }
+  /* seven chapters: tabs show their number; the label unfolds on hover / when current */
   .nav__tab {
     flex-direction: column;
     align-items: center;
-    gap: 2px;
-    width: 58px;
-    padding: 12px 0 14px;
+    gap: 0;
+    width: 52px;
+    padding: 8px 0 9px;
     background: var(--cream);
     border: var(--line) solid var(--ink);
     border-right: 0;
@@ -162,20 +163,32 @@
       width 0.35s var(--ease-pop);
   }
   .nav__num {
-    font-size: 1.35rem;
+    font-size: 1.2rem;
     opacity: 1;
   }
   .nav__label {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    max-height: 0;
+    overflow: hidden;
+    transition:
+      max-height 0.35s var(--ease-out),
+      margin 0.35s var(--ease-out);
   }
-  .nav__tab:hover {
+  .nav__tab:hover,
+  .nav__tab:focus-visible {
     transform: translateX(0);
     background: var(--yellow);
   }
+  .nav__tab:hover .nav__label,
+  .nav__tab:focus-visible .nav__label,
+  .nav__tab[aria-current] .nav__label {
+    max-height: 5.5em;
+    margin-top: 4px;
+  }
   .nav__tab[aria-current] {
-    width: 70px;
+    width: 62px;
     transform: translateX(0);
     background: var(--orange);
   }
@@ -183,13 +196,28 @@
 
 /* tablet + mobile: compact chips in the bar ------------------------------ */
 @media (max-width: 1023px) {
+  /* a scrolling strip of chips between the logo and the sound toggle */
   .nav__chapters {
     top: 0;
-    left: 50%;
+    left: calc(var(--gutter) + 200px);
+    right: calc(var(--gutter) + 112px);
     height: var(--nav-h);
     display: flex;
     align-items: center;
-    translate: -50% 0;
+  }
+  .nav__chapters ol {
+    width: 100%;
+    padding: 4px 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 14px, #000 calc(100% - 14px), transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 14px, #000 calc(100% - 14px), transparent);
+  }
+  .nav__chapters ol::-webkit-scrollbar {
+    display: none;
+  }
+  .nav__chapters li {
+    flex: none;
   }
   .nav__tab {
     padding: 6px 12px;
@@ -219,6 +247,10 @@
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
+  }
+  .nav__chapters {
+    left: calc(var(--gutter) + 50px);
+    right: calc(var(--gutter) + 48px);
   }
   .nav__tab {
     padding: 5px 10px;

@@ -21,9 +21,22 @@
   visibility: hidden;
 }
 
-.hero__stage {
+/* full-bleed paper + background art; this is what sinks back on page-turn */
+.hero__page {
   position: relative;
   height: 100%;
+  overflow: hidden;
+  background: var(--paper);
+  will-change: transform;
+}
+
+/* the composition: centred, max-width, keeps clear of the bookmark tabs */
+.hero__stage {
+  --stage: 1440px;
+  position: relative;
+  height: 100%;
+  max-width: var(--stage);
+  margin-inline: auto;
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
   grid-template-rows: 1fr auto auto 1.15fr;
@@ -32,10 +45,8 @@
     'copy figure'
     'ctas figure'
     '. figure';
-  column-gap: 1vw;
-  padding: var(--nav-h) calc(var(--gutter) + 56px) 0 var(--gutter);
-  background: var(--paper);
-  will-change: transform;
+  column-gap: 2vw;
+  padding: var(--nav-h) calc(max(var(--gutter), 92px - max(0px, (100vw - var(--stage)) / 2))) 0 var(--gutter);
 }
 
 /* background ------------------------------------------------------------- */
@@ -47,7 +58,7 @@
 }
 .hero__rays {
   position: absolute;
-  left: 72%;
+  left: calc(50% + min(100vw, 1440px) * 0.23);
   top: 60%;
   width: 260vmax;
   height: 260vmax;
@@ -119,9 +130,9 @@
   rotate: 14deg;
 }
 .hero__doodle--spiral {
-  width: 56px;
-  left: 44%;
-  bottom: 12%;
+  width: 52px;
+  left: 46%;
+  top: 9%;
   opacity: 0.8;
 }
 .hero__doodle--star {
@@ -265,13 +276,19 @@
   container-type: size;
 }
 
+/* --ch = her height: as tall as the figure allows, never wider than it, never upscaled past ~1000px */
+.hero__figure > * {
+  --ch: min(100cqh, 150cqw, 1000px);
+}
+
 .hero__frame {
   --frame-clip: polygon(7% 3%, 97% 0%, 100% 100%, 0% 100%, 2% 46%);
   position: absolute;
-  left: 0;
-  right: -6%;
+  left: 50%;
   bottom: 0;
-  height: 70%;
+  width: min(calc(var(--ch) * 0.98), 108cqw);
+  height: calc(var(--ch) * 0.7);
+  translate: -48% 0;
   background: var(--ink);
   clip-path: var(--frame-clip);
 }
@@ -295,7 +312,6 @@
 }
 
 .hero__char {
-  --ch: min(100cqh, 100cqw * 1.5);
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -307,8 +323,9 @@
 .hero__bam {
   position: absolute;
   z-index: 4;
-  left: -3%;
-  top: 22%;
+  /* pinned to the top-left corner of her frame */
+  left: max(-4%, calc(50% - var(--ch) * 0.55));
+  bottom: calc(var(--ch) * 0.6);
   padding: 0;
   border: 0;
   background: none;
@@ -325,33 +342,33 @@
 .hero__bubble {
   position: absolute;
   z-index: 6;
-  right: calc(50% + min(100cqh, 100cqw * 1.5) * 0.13);
-  bottom: calc(min(100cqh, 100cqw * 1.5) * 0.9);
+  /* up-left of her head, tail pointing down at her face; never above the figure */
+  right: calc(50% + var(--ch) * 0.13);
+  bottom: min(calc(var(--ch) * 0.88), calc(100cqh - 120px));
   width: max-content;
   max-width: min(21rem, 34vw);
 }
 
 .hero__hint {
-  position: absolute;
-  z-index: 4;
-  right: calc(100% - 2%);
-  bottom: 34%;
-  white-space: nowrap;
+  flex-basis: 100%;
   display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  color: var(--ink);
-  rotate: -6deg;
+  align-items: center;
+  gap: 6px;
+  margin-top: -4px;
+  padding-left: 46%;
+  white-space: nowrap;
+  color: var(--ink-soft);
+  rotate: -3deg;
   pointer-events: none;
 }
 .hero__hint-touch {
   display: none;
 }
 .hero__hint-arrow {
-  width: 58px;
+  width: 54px;
   height: auto;
-  rotate: 12deg;
-  translate: 0 14px;
+  rotate: -14deg;
+  translate: 0 -8px;
 }
 @media (hover: none) {
   .hero__hint-fine {
@@ -459,14 +476,17 @@
   .hero__figure {
     margin-top: 10px;
   }
+  .hero__figure > * {
+    --ch: min(100cqh, 130cqw);
+  }
   .hero__char {
-    --ch: min(100cqh, 100cqw * 1.3);
-    left: 60%;
+    left: 58%;
   }
   .hero__frame {
-    left: 6%;
-    right: -2%;
-    height: 64%;
+    left: 56%;
+    width: min(calc(var(--ch) * 1), 100cqw);
+    height: calc(var(--ch) * 0.64);
+    translate: -50% 0;
   }
   .hero__bubble {
     right: auto;
@@ -478,21 +498,16 @@
   .hero__bam {
     left: auto;
     right: 0;
-    top: 26%;
+    bottom: calc(var(--ch) * 0.55);
   }
   .hero__ctas {
     justify-content: center;
     margin-top: -64px;
     padding-left: 0;
   }
+  /* stacked layout: the buttons sit on her jacket, no room for a note */
   .hero__hint {
-    right: auto;
-    left: 0;
-    bottom: 30%;
-  }
-  .hero__hint-arrow {
-    rotate: -10deg;
-    translate: 0 -10px;
+    display: none;
   }
   .hero__slab {
     width: 100%;
@@ -500,8 +515,8 @@
   }
   .hero__doodle--bolt {
     left: auto;
-    right: 6%;
-    top: 14%;
+    right: 4%;
+    top: 26%;
   }
   .hero__doodle--spiral,
   .hero__doodle--dots {

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { ScrollTrigger } from './lib/gsap';
+import { useEffect, useRef, useState } from 'react';
+import { gsap, ScrollTrigger, useGSAP } from './lib/gsap';
 import { emit } from './lib/events';
 import { readFlag } from './lib/storage';
 import { prefersReducedMotion } from './hooks/useReducedMotion';
@@ -10,8 +10,26 @@ import { SecretPanel } from './components/SecretPanel';
 import { ComicCover, COVER_SEEN_KEY } from './sections/ComicCover';
 import { Hero } from './sections/Hero';
 import { About } from './sections/About';
+import { Projects } from './sections/Projects';
+import { Journey } from './sections/Journey';
+import { Arsenal } from './sections/Arsenal';
+import { Multiverse } from './sections/Multiverse';
+import { Contact } from './sections/Contact';
 
 type Intro = 'cover' | 'opening' | 'done';
+
+/** A line of ink along the top edge that fills as the comic is read. */
+function ReadingInk() {
+  const ref = useRef<HTMLDivElement>(null);
+  useGSAP(() => {
+    gsap.fromTo(
+      ref.current,
+      { scaleX: 0 },
+      { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } },
+    );
+  });
+  return <div ref={ref} className="reading-ink" aria-hidden="true" />;
+}
 
 function Comic() {
   const [returning] = useState(() => readFlag('session', COVER_SEEN_KEY) === '1');
@@ -20,7 +38,7 @@ function Comic() {
   const { play } = useSound();
 
   useSecretCode('bam', () => {
-    play('bam');
+    play('kapow');
     emit('secret');
     setSecret(true);
   });
@@ -44,9 +62,15 @@ function Comic() {
         Skip to the origin story
       </a>
       <ChapterNav />
+      <ReadingInk />
       <main className="story">
         <Hero start={intro !== 'cover'} returning={returning} />
         <About />
+        <Projects />
+        <Journey />
+        <Arsenal />
+        <Multiverse />
+        <Contact />
       </main>
       {intro !== 'done' && <ComicCover onOpen={() => setIntro('opening')} onDone={() => setIntro('done')} />}
       <SecretPanel open={secret} onClose={() => setSecret(false)} />

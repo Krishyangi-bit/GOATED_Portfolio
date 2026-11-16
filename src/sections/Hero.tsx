@@ -68,7 +68,7 @@ export function Hero({ start, returning }: Props) {
           { scale: 1.6, rotation: -8, opacity: 1, duration: 0.45, ease: EASE.impact },
           0.15,
         )
-        .call(() => play('bam'), [], 0.18)
+        .call(() => play('kapow'), [], 0.18)
         .to(q('.hero__bam'), { scale: 1, rotation: -12, duration: 0.6, ease: EASE.spring }, 0.75)
         .from(
           q('.hero__frame'),
@@ -131,7 +131,7 @@ export function Hero({ start, returning }: Props) {
   // --- page-turn into the origin story ------------------------------------
   useGSAP(
     () => {
-      const stage = root.current?.querySelector('.hero__stage');
+      const stage = root.current?.querySelector('.hero__page');
       const dim = root.current?.querySelector('.hero__dim');
       // look the next chapter up globally: selectors inside useGSAP are scoped to the hero
       const origin = document.getElementById('origin');
@@ -205,13 +205,14 @@ export function Hero({ start, returning }: Props) {
     interacted.current = true;
     const line = DIALOGUE.clicks[clicks.current % DIALOGUE.clicks.length];
     clicks.current++;
-    play('pop');
+    // the sound matches her reaction: a hop boings, a fluster slide-whistles, anything else bonks
+    play(line.action === 'hop' ? 'boing' : line.action === 'shake' ? 'whoops' : 'bonk');
     say(line);
   };
 
   const onBam = () => {
     interacted.current = true;
-    play('bam');
+    play('kapow');
     const bam = root.current?.querySelector('.hero__bam');
     if (bam && !reduced) {
       gsap.fromTo(bam, { scale: 1.45, rotation: -2 }, { scale: 1, rotation: -12, duration: 0.7, ease: EASE.spring });
@@ -220,7 +221,10 @@ export function Hero({ start, returning }: Props) {
   };
 
   const onLongHover = () => {
-    if (firstOnce('hover')) say(DIALOGUE.longHover);
+    if (firstOnce('hover')) {
+      play('honk');
+      say(DIALOGUE.longHover);
+    }
   };
 
   const explore = () => {
@@ -230,13 +234,15 @@ export function Hero({ start, returning }: Props) {
 
   return (
     <section id="cover" className="hero" ref={root} aria-labelledby="hero-title">
-      <div className="hero__stage">
+      {/* page = full-bleed paper + background art; stage = the centred, max-width composition */}
+      <div className="hero__page">
         <div className="hero__bg" aria-hidden="true">
           <div className="hero__rays" data-depth="0.25" />
           <div className="hero__halftone" />
           <div className="hero__slab" />
         </div>
 
+        <div className="hero__stage">
         <div className="hero__doodles" aria-hidden="true">
           <span className="hero__doodle hero__doodle--sparkle" data-depth="0.8">
             <Doodle kind="sparkle" color="var(--teal)" />
@@ -297,12 +303,17 @@ export function Hero({ start, returning }: Props) {
             variant="secondary"
             href={SITE.links.linkedin}
             external
-            sfx="POP!"
+            sfx="BOINK!"
             onLongHover={onLongHover}
             icon={<IconLinkedin />}
           >
             Let’s Connect
           </ComicButton>
+          <p className="hero__hint hand" aria-hidden="true">
+            <span className="hero__hint-fine">psst… she’s clickable</span>
+            <span className="hero__hint-touch">tap her!</span>
+            <Doodle kind="arrow" className="hero__hint-arrow" />
+          </p>
         </div>
 
         <div className="hero__figure">
@@ -321,19 +332,16 @@ export function Hero({ start, returning }: Props) {
             preload={['idle', 'excited', 'mischief', 'confused']}
             sizes="(max-width: 1023px) 70vw, 40vw"
             tilt
+            music
             eager
           />
           <div className="hero__bubble">
             <SpeechBubble speech={ctl.speech} tail="bottom-right" />
           </div>
-          <p className="hero__hint hand" aria-hidden="true">
-            <span className="hero__hint-fine">psst… she’s clickable</span>
-            <span className="hero__hint-touch">tap her!</span>
-            <Doodle kind="arrow" className="hero__hint-arrow" />
-          </p>
+        </div>
         </div>
 
-        <a className="hero__corner" href="#origin" onClick={() => play('page')}>
+        <a className="hero__corner" href="#origin" onClick={() => play('ratchet')}>
           <span className="hero__corner-peel" aria-hidden="true" />
           <span className="hero__corner-label">Turn the page</span>
         </a>

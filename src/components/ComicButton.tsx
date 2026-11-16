@@ -15,6 +15,9 @@ type Props = {
   onLongHover?: () => void;
   longHoverMs?: number;
   className?: string;
+  /** render as a form submit button */
+  submit?: boolean;
+  disabled?: boolean;
 };
 
 export function ComicButton({
@@ -28,6 +31,8 @@ export function ComicButton({
   onLongHover,
   longHoverMs = 2600,
   className = '',
+  submit = false,
+  disabled = false,
 }: Props) {
   const { play } = useSound();
   const timer = useRef<number>();
@@ -42,7 +47,7 @@ export function ComicButton({
   const leave = () => window.clearTimeout(timer.current);
   const click = () => {
     leave();
-    play('pop');
+    play('tick');
     onClick?.();
   };
 
@@ -83,7 +88,7 @@ export function ComicButton({
     );
   }
   return (
-    <button type="button" className={cls} onClick={click} {...handlers}>
+    <button type={submit ? 'submit' : 'button'} className={cls} onClick={click} disabled={disabled} {...handlers}>
       {inner}
     </button>
   );

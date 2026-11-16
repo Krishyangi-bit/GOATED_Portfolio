@@ -44,26 +44,27 @@ export type PoseAsset = {
   src: string;
   srcSm: string;
   alt: string;
-  /** closed-eye overlay, painted to match this face */
-  blink?: { src: string; box: Box };
+  /** half-closed + closed eyelid frames, painted onto this exact face (same canvas coords) */
+  blink?: { half: string; closed: string; box: Box };
   /** separately animated raised hand, rotating around its wrist */
   hand?: { src: string; box: Box; pivot: { x: number; y: number } };
 };
 
-const BLINK_BOX: Box = { x: 248, y: 280, w: 210, h: 80 };
+// eye band on the exported 743×1052 canvas (see assets-src/pipeline/3_blink_patch.py)
+const BLINK_BOX: Box = { x: 262, y: 318, w: 190, h: 74 };
 
 export const POSES: Record<Pose, PoseAsset> = {
   idle: {
     src: '/character/idle.webp',
     srcSm: '/character/idle-sm.webp',
     alt: 'Krishyangi, smiling calmly',
-    blink: { src: '/character/blink-idle.webp', box: BLINK_BOX },
+    blink: { half: '/character/blink-idle-half.webp', closed: '/character/blink-idle-closed.webp', box: BLINK_BOX },
   },
   wave: {
     src: '/character/wave-base.webp',
     srcSm: '/character/wave-base-sm.webp',
     alt: 'Krishyangi, waving hello',
-    blink: { src: '/character/blink-wave.webp', box: BLINK_BOX },
+    blink: { half: '/character/blink-wave-base-half.webp', closed: '/character/blink-wave-base-closed.webp', box: BLINK_BOX },
     hand: {
       src: '/character/wave-hand.webp',
       box: { x: 0, y: 430, w: 280, h: 350 },
