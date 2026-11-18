@@ -7,7 +7,6 @@ import type { Mood } from '../character/poses';
 import { ChapterEdge, ChapterSplash } from '../components/Chapter';
 import { Bubble } from '../components/SpeechBubble';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import { useSound, type Sfx } from '../sound/SoundController';
 import './Arsenal.css';
 
 const MOOD_BY_CATEGORY: Record<string, Mood> = {
@@ -17,16 +16,6 @@ const MOOD_BY_CATEGORY: Record<string, Mood> = {
   data: 'thinking',
   ai: 'surprised',
   tools: 'happy',
-};
-
-/** each gadget makes its own little noise when picked (only if sound is on) */
-const SFX_BY_KIND: Record<Kind, Sfx> = {
-  keycap: 'tick',
-  sticker: 'boing',
-  cartridge: 'ratchet',
-  floppy: 'thwack',
-  chip: 'zap',
-  label: 'tick',
 };
 
 type Pick = { cat: string; power: string } | null;
@@ -97,7 +86,6 @@ function GadgetBody({ kind, power }: { kind: Kind; power: Power }) {
 export function Arsenal() {
   const root = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const { play } = useSound();
   const [hover, setHover] = useState<Pick>(null);
   const [picked, setPicked] = useState<Pick>(null);
 
@@ -119,7 +107,6 @@ export function Arsenal() {
     const same = picked?.power === p.id;
     setPicked(same ? null : { cat: cat.id, power: p.id });
     if (same) return;
-    play(SFX_BY_KIND[cat.kind], { volume: 0.7 });
     if (!reduced) {
       gsap.fromTo(el, { scale: 0.9 }, { scale: 1, duration: 0.4, ease: EASE.pop, clearProps: 'scale' });
     }

@@ -12,6 +12,7 @@ import './Journey.css';
 
 /** Fields that genuinely weren't supplied show as TODO chips — except on the open-ended "next" chapter. */
 function Field({ label, items, chapter }: { label: string; items: string[] | null; chapter: Chapter }) {
+  if (items && items.length === 0) return null; // intentionally left out
   if (!items) {
     if (chapter.id === 'next') return null;
     return (

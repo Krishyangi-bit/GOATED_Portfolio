@@ -17,16 +17,8 @@ npm run build    # type-check + production build to dist/
 | `src/character/` | Character rig (`Character.tsx`), asset map (`poses.ts`), dialogue/expression controller (`useCharacterController.ts`). |
 | `src/components/` | Reusable comic pieces: `ComicPanel`, `SpeechBubble`, `ComicButton`, `Burst`, `ChapterNav`, `SpeedPeek`, `SecretPanel`. |
 | `src/sections/` | `ComicCover` (opening), `Hero`, `About`. |
-| `src/sound/` | Optional synthesized sound effects (off by default). |
 | `src/lib/motion.ts` | Shared easing/duration language. |
 | `assets-src/` | Original illustrations (untouched backups) + the asset pipeline scripts. |
-
-## Sound design
-
-Muted by default (toggle top-right; the choice is remembered). All sounds are synthesised in
-`src/sound/SoundController.tsx`, each tied to one kind of moment: **bonk / boing / whoops** when
-she reacts, **kapow** for BAM!, **thwack** as each panel lands, **zap** for the fried Pi,
-**ratchet** for page turns, **honk** when sound is switched on, **tick** for buttons.
 
 ## Adding a chapter later
 

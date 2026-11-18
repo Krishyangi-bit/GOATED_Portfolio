@@ -3,18 +3,15 @@ import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
 import { EASE, seeded } from '../lib/motion';
 import { ORIGIN } from '../content/origin';
 import { SITE } from '../content/site';
-import { DIALOGUE } from '../content/dialogue';
 import { Character, type CharacterHandle } from '../character/Character';
-import { useCharacterController } from '../character/useCharacterController';
 import type { Mood } from '../character/poses';
 import { ComicPanel } from '../components/ComicPanel';
-import { Bubble, SpeechBubble } from '../components/SpeechBubble';
-import { ComicButton } from '../components/ComicButton';
+import { Bubble } from '../components/SpeechBubble';
 import { Burst } from '../components/Burst';
 import { RaspberryPi } from '../components/RaspberryPi';
 import { SpeedPeek } from '../components/SpeedPeek';
 import { Interests } from '../components/Interests';
-import { IconChip, IconCode, IconEye, IconGithub, IconLinkedin } from '../components/Doodles';
+import { IconChip, IconCode, IconEye } from '../components/Doodles';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import './About.css';
 
@@ -37,7 +34,7 @@ function TornEdge() {
 
 /**
  * ACT 02 — THE ORIGIN STORY
- * A page of six panels read top-left to bottom-right. Each panel draws itself,
+ * A page of panels read top-left to bottom-right. Each panel draws itself,
  * then cues the character to react to what the panel is about.
  */
 export function About() {
@@ -50,12 +47,8 @@ export function About() {
   const [p5, setP5] = useState<Mood>('idle');
   const p4Ref = useRef<CharacterHandle>(null);
   const p5Ref = useRef<CharacterHandle>(null);
-  const finale = useCharacterController('idle', 'wave');
-  const finaleShown = useRef(false);
-  const endSaid = useRef(false);
 
   const edu = ORIGIN.beginning.education;
-  const signOff = { text: ORIGIN.continued.bubble, mood: 'greeting' as const };
 
   // --- splash heading + scroll-driven pieces -------------------------------
   useGSAP(
@@ -111,21 +104,6 @@ export function About() {
           },
         });
       }
-
-      // reaching the last panel of the origin story
-      ScrollTrigger.create({
-        trigger: q('.p6')[0],
-        start: 'bottom 88%',
-        onEnter: () => {
-          if (finaleShown.current && !endSaid.current) {
-            endSaid.current = true;
-            window.setTimeout(() => {
-              finale.say(DIALOGUE.theEnd, { hold: 5200, stay: true });
-              window.setTimeout(() => finale.say(signOff, { hold: Infinity, stay: true }), 5400);
-            }, 900);
-          }
-        },
-      });
     },
     { scope: root, dependencies: [reduced] },
   );
@@ -153,11 +131,6 @@ export function About() {
   const levelUp = () => {
     setP5('excited');
     window.setTimeout(() => p5Ref.current?.hop(), 150);
-  };
-
-  const continued = () => {
-    finaleShown.current = true;
-    finale.say({ ...signOff, action: 'wave' }, { hold: Infinity, stay: true });
   };
 
   return (
@@ -242,7 +215,6 @@ export function About() {
             [0, 100],
           ]}
           onReveal={() => setP2('thinking')}
-          sfxRate={1.18}
         >
           <div className="p2__halo" aria-hidden="true" data-depth="0.3" />
           <h3 id="p2-h" className="sr-only">
@@ -285,7 +257,6 @@ export function About() {
             [1, 98],
           ]}
           onReveal={typeTerminal}
-          sfxRate={0.86}
         >
           <div className="p3__grid" aria-hidden="true" />
           <h3 id="p3-h" className="caption p3__caption" data-reveal>
@@ -334,7 +305,6 @@ export function About() {
             [0, 96],
           ]}
           onReveal={fzzt}
-          sfx="zap"
         >
           <div className="p4__burst" aria-hidden="true" data-depth="0.35">
             <Burst text="" color="var(--yellow)" spikes={18} seed={9} />
@@ -378,7 +348,6 @@ export function About() {
             [0.5, 98.5],
           ]}
           onReveal={levelUp}
-          sfx="boing"
         >
           <div className="p5__speed" aria-hidden="true" data-depth="0.2" />
           <div className="p5__head">
@@ -428,7 +397,6 @@ export function About() {
             [98.6, 100],
             [1, 98.4],
           ]}
-          sfxRate={1.3}
         >
           <div className="file">
             <div className="file__head" data-reveal>
@@ -438,7 +406,7 @@ export function About() {
                 <h3 id="pf-h" className="file__name">
                   {SITE.fullName}
                 </h3>
-                <p className="file__role">Protagonist · Issue {SITE.issue}</p>
+                <p className="file__role">Protagonist</p>
               </div>
               <p className="file__age" data-sfx>
                 <span>Age</span>
@@ -454,50 +422,6 @@ export function About() {
               ))}
             </dl>
             <Interests />
-          </div>
-        </ComicPanel>
-
-        {/* PANEL 06 — WHAT'S NEXT -------------------------------------------- */}
-        <ComicPanel
-          className="p6"
-          tone="tone-pink"
-          from="right"
-          label={`Panel 06 — ${ORIGIN.continued.title}`}
-          headingId="p6-h"
-          shape={[
-            [2, 0],
-            [100, 2],
-            [100, 100],
-            [0, 98],
-          ]}
-          onReveal={continued}
-          sfxRate={1.06}
-        >
-          <div className="p6__rays" aria-hidden="true" data-depth="0.2" />
-          <div className="p6__bubble">
-            <SpeechBubble speech={finale.speech} tail="bottom-right" />
-          </div>
-          <div className="p6__char">
-            <Character
-              ref={finale.charRef}
-              mood={finale.mood}
-              preload={['wave', 'excited']}
-              label="Krishyangi"
-              sizes="(max-width: 639px) 60vw, 26vw"
-            />
-          </div>
-          <div className="p6__end">
-            <h3 id="p6-h" className="sr-only">
-              {ORIGIN.continued.title}
-            </h3>
-            <div className="p6__links" data-reveal>
-              <ComicButton variant="ink" href={SITE.links.github} external icon={<IconGithub />} sfx="CLICK!">
-                GitHub
-              </ComicButton>
-              <ComicButton variant="secondary" href={SITE.links.linkedin} external icon={<IconLinkedin />} sfx="BOINK!">
-                LinkedIn
-              </ComicButton>
-            </div>
           </div>
         </ComicPanel>
       </div>

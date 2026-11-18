@@ -1,5 +1,4 @@
 import { useEffect, useRef, type ReactNode } from 'react';
-import { useSound } from '../sound/SoundController';
 import './ComicButton.css';
 
 type Props = {
@@ -34,7 +33,6 @@ export function ComicButton({
   submit = false,
   disabled = false,
 }: Props) {
-  const { play } = useSound();
   const timer = useRef<number>();
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
@@ -47,7 +45,6 @@ export function ComicButton({
   const leave = () => window.clearTimeout(timer.current);
   const click = () => {
     leave();
-    play('tick');
     onClick?.();
   };
 

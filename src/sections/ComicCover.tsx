@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import { gsap, useGSAP } from '../lib/gsap';
 import { EASE } from '../lib/motion';
 import { SITE } from '../content/site';
-import { useSound } from '../sound/SoundController';
 import { writeFlag } from '../lib/storage';
 import './ComicCover.css';
 
@@ -22,7 +21,6 @@ export const COVER_SEEN_KEY = 'lcb-cover-seen';
 export function ComicCover({ onOpen, onDone }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline>();
-  const { play } = useSound();
   const opened = useRef(false);
 
   useGSAP(
@@ -32,7 +30,6 @@ export function ComicCover({ onOpen, onDone }: Props) {
         if (opened.current) return;
         opened.current = true;
         writeFlag('session', COVER_SEEN_KEY, '1');
-        play('ratchet');
         onOpen();
       };
 
@@ -83,13 +80,9 @@ export function ComicCover({ onOpen, onDone }: Props) {
           <div className="cover__halftone" aria-hidden="true" />
           <header className="cover__masthead">
             <span className="cover__title">The Living Comic Book</span>
-            <span className="cover__issue">
-              <small>Issue</small>
-              {SITE.issue}
-            </span>
           </header>
           <p className="cover__strap">
-            {SITE.issueDate} · Starring {SITE.name} · Interactive edition
+            Starring {SITE.name} · Interactive edition
           </p>
           <img className="cover__hero" src="/character/idle.webp" alt="" width={743} height={1052} />
           <p className="cover__blurb">“Wait… is this thing alive?!”</p>

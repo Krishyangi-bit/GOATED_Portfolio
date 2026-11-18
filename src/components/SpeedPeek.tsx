@@ -4,7 +4,6 @@ import { EASE } from '../lib/motion';
 import { DIALOGUE } from '../content/dialogue';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { Bubble } from './SpeechBubble';
-import { useSound } from '../sound/SoundController';
 import './SpeedPeek.css';
 
 /**
@@ -16,7 +15,6 @@ export function SpeedPeek({ within }: { within: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const fired = useRef(false);
   const reduced = useReducedMotion();
-  const { play } = useSound();
 
   useEffect(() => {
     if (reduced) return;
@@ -37,7 +35,6 @@ export function SpeedPeek({ within }: { within: string }) {
   useEffect(() => {
     const el = ref.current;
     if (!show || !el) return;
-    play('whoops');
     const tl = gsap
       .timeline({ onComplete: () => setShow(false) })
       .fromTo(el, { xPercent: -120, rotation: -14 }, { xPercent: 0, rotation: 0, duration: 0.5, ease: EASE.pop })

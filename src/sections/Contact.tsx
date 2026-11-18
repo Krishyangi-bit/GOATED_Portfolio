@@ -10,7 +10,6 @@ import { Burst } from '../components/Burst';
 import { ChapterEdge } from '../components/Chapter';
 import { IconGithub, IconLinkedin } from '../components/Doodles';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import { useSound } from '../sound/SoundController';
 import './Contact.css';
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
@@ -43,7 +42,6 @@ export function Contact() {
   const root = useRef<HTMLElement>(null);
   const boom = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
-  const { play } = useSound();
   const ctl = useCharacterController('idle', 'idle');
   const { say } = ctl;
   const [fields, setFields] = useState<Fields>(EMPTY);
@@ -122,7 +120,6 @@ export function Contact() {
       if (!res.ok || String(data.success) !== 'true') throw new Error(data.message || `Status ${res.status}`);
       setStatus('sent');
       setFields(EMPTY);
-      play('kapow');
       say({ text: 'BOOM! Got it. I’ll read it soon — probably with music on.', mood: 'excited', action: 'hop' }, { hold: 6000 });
       requestAnimationFrame(() => {
         if (!boom.current || reduced) return;
@@ -132,7 +129,6 @@ export function Contact() {
     } catch (err) {
       setStatus('error');
       setFailure(err instanceof Error ? err.message : '');
-      play('whoops');
       say({ text: 'Hmm. The transmission fizzled. Email works too!', mood: 'confused', action: 'shake' }, { hold: 5000 });
     }
   };

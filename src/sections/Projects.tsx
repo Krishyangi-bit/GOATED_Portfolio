@@ -9,7 +9,6 @@ import { ChapterEdge, ChapterSplash } from '../components/Chapter';
 import { CoverArt } from '../components/CoverArt';
 import { IssueReader } from './IssueReader';
 import { useReducedMotion, hasFinePointer } from '../hooks/useReducedMotion';
-import { useSound } from '../sound/SoundController';
 import './Projects.css';
 
 const coverVars = (p: Project) =>
@@ -99,7 +98,6 @@ function CoverCard({
 export function Projects() {
   const root = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const { play } = useSound();
   const ctl = useCharacterController('idle', 'idle');
   const { say } = ctl;
   const [open, setOpen] = useState<number | null>(null);
@@ -161,7 +159,6 @@ export function Projects() {
 
   const onOpen = (i: number, el: HTMLElement) => {
     trigger.current = el;
-    play('ratchet');
     if (!reduced) {
       gsap.fromTo(el, { scale: 1 }, { scale: 1.06, rotationY: -18, duration: 0.22, ease: 'power2.in', yoyo: true, repeat: 1, clearProps: 'transform' });
     }

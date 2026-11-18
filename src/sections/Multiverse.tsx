@@ -5,7 +5,6 @@ import { SITE } from '../content/site';
 import { ChapterEdge, ChapterSplash } from '../components/Chapter';
 import { IconGithub, IconLinkedin } from '../components/Doodles';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import { useSound } from '../sound/SoundController';
 import './Multiverse.css';
 
 const IconMail = () => (
@@ -82,7 +81,6 @@ const PORTALS: Portal[] = [
 export function Multiverse() {
   const root = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const { play } = useSound();
 
   useGSAP(
     () => {
@@ -102,7 +100,6 @@ export function Multiverse() {
   );
 
   const warp = (el: HTMLElement) => {
-    play('zap');
     if (reduced) return;
     gsap.fromTo(el.querySelector('.portal__flash'), { opacity: 0.95, scale: 0.3 }, { opacity: 0, scale: 2.2, duration: 0.6, ease: 'power2.out' });
     gsap.fromTo(el.querySelector('.portal__ring'), { rotation: 0 }, { rotation: 540, duration: 0.8, ease: 'power3.out' });

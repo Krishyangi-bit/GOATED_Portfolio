@@ -120,6 +120,7 @@ export const IconArrowDown = () => (
   </svg>
 );
 
+
 export const IconSound = ({ on }: { on: boolean }) => (
   <svg {...icon}>
     <path d="M4 9.5h3.5L12 5v14l-4.5-4.5H4z" fill="currentColor" />

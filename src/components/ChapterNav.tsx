@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { ScrollTrigger } from '../lib/gsap';
-import { CHAPTERS, SITE, type ChapterId } from '../content/site';
-import { useSound } from '../sound/SoundController';
-import { IconSound } from './Doodles';
+import { CHAPTERS, type ChapterId } from '../content/site';
 import { burstPoints } from '../lib/motion';
+import { setMuted, useMuted } from '../lib/softSound';
+import { IconSound } from './Doodles';
 import './ChapterNav.css';
 
 const BADGE = burstPoints(10, 5, 0.74, 0.08);
@@ -15,7 +15,7 @@ const BADGE = burstPoints(10, 5, 0.74, 0.08);
 export function ChapterNav() {
   const [active, setActive] = useState<ChapterId>(CHAPTERS[0].id);
   const [solid, setSolid] = useState(false);
-  const { enabled, toggle, play } = useSound();
+  const muted = useMuted();
   const strip = useRef<HTMLOListElement>(null);
 
   // on small screens the chips scroll sideways: keep the current chapter in view
@@ -48,7 +48,7 @@ export function ChapterNav() {
   return (
     <>
     <header className={`nav ${solid ? 'is-solid' : ''}`}>
-      <a className="nav__logo" href={`#${CHAPTERS[0].id}`} onClick={() => play('ratchet')} aria-label="Krishyangi, back to the cover">
+      <a className="nav__logo" href={`#${CHAPTERS[0].id}`} aria-label="Krishyangi, back to the cover">
         <span className="nav__badge" aria-hidden="true">
           <svg viewBox="-6 -6 112 112">
             <polygon points={BADGE} />
@@ -57,23 +57,19 @@ export function ChapterNav() {
         </span>
         <span className="nav__masthead" aria-hidden="true">
           <b>The Living Comic Book</b>
-          <small>
-            Issue {SITE.issue} · {SITE.issueDate}
-          </small>
         </span>
       </a>
-
 
       <button
         type="button"
         className="nav__sound"
-        aria-pressed={enabled}
-        onClick={toggle}
-        title={enabled ? 'Sound effects on' : 'Sound effects off'}
+        aria-pressed={!muted}
+        onClick={() => setMuted(!muted)}
+        title={muted ? 'Sound off: click to unmute' : 'Sound on: click to mute'}
       >
-        <IconSound on={enabled} />
-        <span className="nav__sound-label">SFX {enabled ? 'on' : 'off'}</span>
-        <span className="sr-only">Toggle comic sound effects</span>
+        <IconSound on={!muted} />
+        <span className="nav__sound-label">{muted ? 'Muted' : 'Sound'}</span>
+        <span className="sr-only">{muted ? 'Unmute sound' : 'Mute sound'}</span>
       </button>
     </header>
       <nav className={`nav__chapters ${solid ? 'is-solid' : ''}`} aria-label="Chapters">
@@ -84,7 +80,6 @@ export function ChapterNav() {
                 href={`#${c.id}`}
                 className="nav__tab"
                 aria-current={active === c.id ? 'location' : undefined}
-                onClick={() => play('ratchet')}
               >
                 <span className="nav__num">{c.num}</span>
                 <span className="nav__label">{c.label}</span>

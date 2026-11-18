@@ -60,7 +60,7 @@ export const JOURNEY: Chapter[] = [
       'Curating knowledge and sparking discussions about Gemini',
       'Building a campus community that stays ahead of the curve',
     ],
-    achievements: null,
+    achievements: [],
     skills: ['AI communication', 'Community building', 'Knowledge curation'],
     line: 'Now I get to talk about AI. Professionally. The yapping paid off.',
     mood: 'greeting',

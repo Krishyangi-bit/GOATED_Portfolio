@@ -1,5 +1,5 @@
 /**
- * Tiny event bus so distant parts of the comic (secret code, sound, sections)
+ * Tiny event bus so distant parts of the comic (secret code, sections)
  * can nudge the character without prop-drilling.
  */
 type Events = {

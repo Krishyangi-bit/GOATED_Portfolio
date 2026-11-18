@@ -10,8 +10,8 @@ import { SpeechBubble } from '../components/SpeechBubble';
 import { ComicButton } from '../components/ComicButton';
 import { Burst } from '../components/Burst';
 import { Doodle, IconArrowDown, IconLinkedin } from '../components/Doodles';
-import { useSound } from '../sound/SoundController';
 import { hasFinePointer, useReducedMotion } from '../hooks/useReducedMotion';
+import { playSoft } from '../lib/softSound';
 import './Hero.css';
 
 type Props = {
@@ -39,7 +39,6 @@ export function Hero({ start, returning }: Props) {
   const root = useRef<HTMLElement>(null);
   const tlRef = useRef<gsap.core.Timeline>();
   const reduced = useReducedMotion();
-  const { play } = useSound();
   const ctl = useCharacterController('greeting', 'idle');
   const { say } = ctl;
 
@@ -68,8 +67,9 @@ export function Hero({ start, returning }: Props) {
           { scale: 1.6, rotation: -8, opacity: 1, duration: 0.45, ease: EASE.impact },
           0.15,
         )
-        .call(() => play('kapow'), [], 0.18)
+        .call(() => playSoft('pop', { rate: 0.85 }), [], 0.2)
         .to(q('.hero__bam'), { scale: 1, rotation: -12, duration: 0.6, ease: EASE.spring }, 0.75)
+        .call(() => playSoft('chime'), [], 1.1)
         .from(
           q('.hero__frame'),
           { clipPath: 'polygon(50% 60%, 50% 60%, 50% 60%, 50% 60%, 50% 60%)', duration: 0.7, ease: EASE.ink },
@@ -106,6 +106,7 @@ export function Hero({ start, returning }: Props) {
   useEffect(() => {
     if (!start) return;
     if (reduced) {
+      playSoft('chime');
       greet();
       return;
     }
@@ -205,14 +206,13 @@ export function Hero({ start, returning }: Props) {
     interacted.current = true;
     const line = DIALOGUE.clicks[clicks.current % DIALOGUE.clicks.length];
     clicks.current++;
-    // the sound matches her reaction: a hop boings, a fluster slide-whistles, anything else bonks
-    play(line.action === 'hop' ? 'boing' : line.action === 'shake' ? 'whoops' : 'bonk');
+    playSoft('pop', { rate: 1.1 });
     say(line);
   };
 
   const onBam = () => {
     interacted.current = true;
-    play('kapow');
+    playSoft('pop', { rate: 0.85 });
     const bam = root.current?.querySelector('.hero__bam');
     if (bam && !reduced) {
       gsap.fromTo(bam, { scale: 1.45, rotation: -2 }, { scale: 1, rotation: -12, duration: 0.7, ease: EASE.spring });
@@ -222,7 +222,6 @@ export function Hero({ start, returning }: Props) {
 
   const onLongHover = () => {
     if (firstOnce('hover')) {
-      play('honk');
       say(DIALOGUE.longHover);
     }
   };
@@ -263,7 +262,7 @@ export function Hero({ start, returning }: Props) {
 
         <div className="hero__copy">
           <p className="hero__kicker caption">
-            Issue {SITE.issue} · Meet the protagonist
+            Meet the protagonist
           </p>
           <h1 id="hero-title" className="hero__name">
             <span className="sr-only">{SITE.name}!</span>
@@ -320,7 +319,7 @@ export function Hero({ start, returning }: Props) {
           <div className="hero__frame" aria-hidden="true">
             <div className="hero__frame-art" />
           </div>
-          <button type="button" className="hero__bam" onClick={onBam} aria-label="BAM! Press for a sound effect">
+          <button type="button" className="hero__bam" onClick={onBam} aria-label="BAM!">
             <Burst text="BAM!" color="var(--yellow)" spikes={13} seed={21} />
           </button>
           <Character
@@ -341,7 +340,7 @@ export function Hero({ start, returning }: Props) {
         </div>
         </div>
 
-        <a className="hero__corner" href="#origin" onClick={() => play('ratchet')}>
+        <a className="hero__corner" href="#origin" >
           <span className="hero__corner-peel" aria-hidden="true" />
           <span className="hero__corner-label">Turn the page</span>
         </a>

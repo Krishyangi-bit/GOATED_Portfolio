@@ -7,7 +7,6 @@ import { Bubble } from '../components/SpeechBubble';
 import { ComicButton } from '../components/ComicButton';
 import { IconGithub } from '../components/Doodles';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import { useSound } from '../sound/SoundController';
 import './IssueReader.css';
 
 type Props = {
@@ -33,7 +32,6 @@ export function IssueReader({ projects, index, onIndex, onClose, coverVars }: Pr
   const dialog = useRef<HTMLDialogElement>(null);
   const page = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
-  const { play } = useSound();
   const [shown, setShown] = useState<number | null>(index);
   const flipDir = useRef<0 | 1 | -1>(0);
   const busy = useRef(false);
@@ -95,7 +93,6 @@ export function IssueReader({ projects, index, onIndex, onClose, coverVars }: Pr
   const flip = (dir: 1 | -1) => {
     if (shown === null || busy.current) return;
     const next = (shown + dir + projects.length) % projects.length;
-    play('ratchet');
     if (reduced || !page.current) {
       setShown(next);
       onIndex(next);

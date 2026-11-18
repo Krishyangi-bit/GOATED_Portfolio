@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
 import { EASE } from '../lib/motion';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import { useSound, type Sfx } from '../sound/SoundController';
+import { playSoft } from '../lib/softSound';
 import './ComicPanel.css';
 
 export type From = 'left' | 'right' | 'top' | 'bottom' | 'center';
@@ -50,10 +50,6 @@ type Props = {
   /** fired once the panel has opened on screen — use it to cue the character */
   onReveal?: () => void;
   headingId?: string;
-  /** sound when the panel lands (muted unless the visitor turned sound on) */
-  sfx?: Sfx | null;
-  /** pitch of that sound, so consecutive panels don't sound identical */
-  sfxRate?: number;
 };
 
 /**
@@ -73,14 +69,7 @@ export function ComicPanel({
   breakout,
   onReveal,
   headingId,
-  sfx = 'thwack',
-  sfxRate = 1,
 }: Props) {
-  const { play } = useSound();
-  const landRef = useRef<() => void>(() => {});
-  landRef.current = () => {
-    if (sfx) play(sfx, { rate: sfxRate, volume: 0.6 });
-  };
   const ref = useRef<HTMLElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
   const reduced = useReducedMotion();
@@ -130,7 +119,7 @@ export function ComicPanel({
         .to(reveals, { opacity: 1, y: 0, duration: 0.6, stagger: 0.09, ease: EASE.settle }, 0.45)
         .to(pops, { opacity: 1, scale: 1, duration: 0.55, stagger: 0.12, ease: EASE.pop }, 0.7)
         .to(sfx, { opacity: 1, scale: 1, duration: 0.45, stagger: 0.1, ease: EASE.impact }, 0.8)
-        .call(() => landRef.current(), [], 0.3)
+        .call(() => playSoft('panel', { rate: 0.9 + Math.random() * 0.2 }), [], 0.3)
         .call(() => onRevealRef.current?.(), [], 0.65);
 
       ScrollTrigger.create({ trigger: root, start: 'top 78%', once: true, onEnter: () => tl.play() });

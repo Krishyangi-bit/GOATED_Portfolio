@@ -4,7 +4,6 @@ import { emit } from './lib/events';
 import { readFlag } from './lib/storage';
 import { prefersReducedMotion } from './hooks/useReducedMotion';
 import { useSecretCode } from './hooks/useSecretCode';
-import { SoundProvider, useSound } from './sound/SoundController';
 import { ChapterNav } from './components/ChapterNav';
 import { SecretPanel } from './components/SecretPanel';
 import { ComicCover, COVER_SEEN_KEY } from './sections/ComicCover';
@@ -35,10 +34,8 @@ function Comic() {
   const [returning] = useState(() => readFlag('session', COVER_SEEN_KEY) === '1');
   const [intro, setIntro] = useState<Intro>(() => (returning || prefersReducedMotion() ? 'done' : 'cover'));
   const [secret, setSecret] = useState(false);
-  const { play } = useSound();
 
   useSecretCode('bam', () => {
-    play('kapow');
     emit('secret');
     setSecret(true);
   });
@@ -80,8 +77,6 @@ function Comic() {
 
 export default function App() {
   return (
-    <SoundProvider>
       <Comic />
-    </SoundProvider>
   );
 }

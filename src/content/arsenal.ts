@@ -98,11 +98,11 @@ export const ARSENAL: Category[] = [
     powers: [
       { id: 'git', name: 'Git', title: 'The Time Machine', glyph: '⎇', color: '#f05033', where: '30+ public repositories and counting.' },
       { id: 'github', name: 'GitHub', title: 'The Archive Keeper', glyph: 'GH', color: '#16131c', where: 'Home of every issue in this comic.' },
-      { id: 'linux', name: 'Linux', title: 'The Terminal Monk', glyph: '>_', color: '#ffd23f', where: 'Listed on her résumé.' },
-      { id: 'pi', name: 'Raspberry Pi', title: 'The Tiny Titan', glyph: 'π', color: '#c51a4a', where: 'Hardware builds — including the one that taught her about voltage dividers.' },
-      { id: 'vercel', name: 'Vercel', title: 'The Launch Pad', glyph: '▲', color: '#16131c', where: 'Listed in her GitHub tech stack.' },
-      { id: 'figma', name: 'Figma', title: 'The Sketchbook', glyph: 'Fg', color: '#a259ff', where: 'Listed in her GitHub tech stack.' },
-      { id: 'powershell', name: 'PowerShell', title: 'The Command Caster', glyph: 'PS', color: '#2a5fa8', where: 'Listed in her GitHub tech stack.' },
+      { id: 'linux', name: 'Linux', title: 'The Terminal Monk', glyph: '>_', color: '#ffd23f', where: 'Where she talks to the machine directly. No buttons, just commands.' },
+      { id: 'pi', name: 'Raspberry Pi', title: 'The Tiny Titan', glyph: 'π', color: '#c51a4a', where: 'A pocket-sized computer for her hardware builds (one of them taught her about voltage dividers the hard way).' },
+      { id: 'vercel', name: 'Vercel', title: 'The Launch Pad', glyph: '▲', color: '#16131c', where: 'One push and her projects go live on the internet. Whoosh!' },
+      { id: 'figma', name: 'Figma', title: 'The Sketchbook', glyph: 'Fg', color: '#a259ff', where: 'Where ideas get doodled into layouts before a single line of code.' },
+      { id: 'powershell', name: 'PowerShell', title: 'The Command Caster', glyph: 'PS', color: '#2a5fa8', where: 'Her spellbook for automating the boring bits on Windows.' },
     ],
   },
 ];
