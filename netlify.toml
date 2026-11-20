@@ -1,0 +1,26 @@
+# Netlify build settings for the Vite + React comic portfolio.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Single-page app: any unknown path falls back to the comic.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Keep the existing favicon (public/favicon.svg) and let updates to it show up quickly.
+[[headers]]
+  for = "/favicon.svg"
+  [headers.values]
+    Content-Type = "image/svg+xml"
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+# Vite's hashed build files never change, so browsers can cache them for a long time.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
