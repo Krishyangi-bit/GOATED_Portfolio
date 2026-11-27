@@ -1,0 +1,252 @@
+/* ==========================================================================
+   CHAPTER 04 — CHARACTER DEVELOPMENT · side quests
+   One IIIT-Delhi block (the arena) holding both hackathons (the bouts).
+   ========================================================================== */
+
+/* the block ---------------------------------------------------------------- */
+.arena {
+  max-width: 1120px;
+  margin: clamp(56px, 6vw, 96px) auto 0;
+  padding: clamp(20px, 3vw, 34px);
+  background: var(--ink);
+  color: var(--cream);
+  border: var(--line-bold) solid var(--ink);
+  border-radius: 8px;
+  box-shadow: 10px 10px 0 var(--red);
+  rotate: -0.4deg;
+}
+
+.arena__head {
+  display: grid;
+  gap: 8px;
+  padding-bottom: clamp(22px, 3vw, 30px);
+}
+.arena__kicker {
+  justify-self: start;
+  padding: 3px 10px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.arena__title {
+  font-family: var(--font-sfx);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: 0.03em;
+  color: var(--orange);
+  -webkit-text-stroke: 0.03em var(--cream);
+  paint-order: stroke fill;
+}
+.arena__title span {
+  color: var(--yellow);
+  -webkit-text-stroke: 0;
+}
+.arena__blurb {
+  max-width: 62ch;
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+.arena__tally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+.arena__tally li {
+  padding: 5px 14px;
+  border: 2px solid var(--cream);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.arena__tally b {
+  color: var(--yellow);
+}
+
+.arena__bouts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+  gap: clamp(44px, 4vw, 32px) clamp(20px, 3vw, 32px);
+  padding-top: 18px;
+}
+
+/* each hackathon ------------------------------------------------------- */
+.bout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+  color: var(--ink);
+  border: var(--line) solid var(--cream);
+  outline: var(--line) solid var(--ink);
+  box-shadow: 7px 7px 0 var(--orange);
+}
+.bout--b {
+  box-shadow: 7px 7px 0 var(--teal-light);
+}
+
+.bout__stamp {
+  position: absolute;
+  right: -16px;
+  top: -34px;
+  z-index: 2;
+  width: 7.4rem;
+  font-size: 0.86rem;
+  rotate: 10deg;
+}
+
+.bout__head {
+  padding: 16px 110px 14px 20px;
+  background: var(--orange);
+  border-bottom: var(--line) solid var(--ink);
+}
+.bout--b .bout__head {
+  background: var(--teal-light);
+}
+.bout__event {
+  font-family: var(--font-sfx);
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.bout__meta {
+  margin-top: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.bout__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 18px 20px 22px;
+}
+.bout__kicker {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--orange-deep);
+}
+.bout__project {
+  margin-top: 2px;
+  font-family: var(--font-head);
+  font-weight: 400;
+  font-size: clamp(2.1rem, 4vw, 2.8rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.bout__pitch {
+  margin-top: 8px;
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  color: var(--teal-deep);
+}
+.bout__summary {
+  margin-top: 12px;
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.bout__label {
+  margin: 18px 0 8px;
+  padding-top: 12px;
+  border-top: 2px dashed rgba(22, 19, 28, 0.25);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teal-deep);
+}
+.bout__list {
+  display: grid;
+  gap: 6px;
+}
+.bout__list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.bout__list li::before {
+  content: '★';
+  position: absolute;
+  left: 0;
+  color: var(--orange);
+  -webkit-text-stroke: 0.6px var(--ink);
+}
+.bout__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.bout__chips li {
+  padding: 3px 10px;
+  background: var(--teal);
+  color: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.bout--b .bout__chips li {
+  background: var(--cobalt);
+}
+
+.bout__result {
+  margin-top: auto;
+  padding-top: 20px;
+  font-weight: 600;
+}
+.bout__result strong {
+  font-family: var(--font-sfx);
+  font-weight: 400;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  color: var(--red);
+}
+
+.bout__cert {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 8px 16px;
+  background: var(--orange);
+  color: var(--ink);
+  border: var(--line) solid var(--ink);
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 var(--ink);
+  font-family: var(--font-sfx);
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition:
+    transform 0.2s var(--ease-pop),
+    box-shadow 0.2s var(--ease-pop);
+}
+.bout__cert:hover,
+.bout__cert:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+@media (max-width: 639px) {
+  .bout__stamp {
+    right: -6px;
+    top: -32px;
+    width: 6.2rem;
+    font-size: 0.74rem;
+  }
+  .bout__head {
+    padding-right: 84px;
+  }
+}

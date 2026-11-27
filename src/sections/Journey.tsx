@@ -8,6 +8,7 @@ import { Bubble, SpeechBubble } from '../components/SpeechBubble';
 import { ChapterEdge, ChapterSplash, Todo } from '../components/Chapter';
 import { SceneArt } from '../components/SceneArt';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { JourneyHackathons } from './JourneyHackathons';
 import './Journey.css';
 
 /** Fields that genuinely weren't supplied show as TODO chips — except on the open-ended "next" chapter. */
@@ -187,7 +188,7 @@ export function Journey() {
         words={['Character', 'Development']}
         accent={1}
         aside="(every milestone changes the protagonist)"
-        intro={<p>A university campus, a Google ambassador badge and a road that’s still being drawn. Scroll, and she’ll walk you through it.</p>}
+        intro={<p>A university campus, a Google ambassador badge, two IIIT-Delhi hackathons and a road that’s still being drawn. Scroll, and she’ll walk you through it.</p>}
       />
 
       <div className="journey">
@@ -232,6 +233,8 @@ export function Journey() {
           </div>
         </div>
       </div>
+
+      <JourneyHackathons />
     </section>
   );
 }

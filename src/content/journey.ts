@@ -41,7 +41,12 @@ export const JOURNEY: Chapter[] = [
       'Coursework across web development, Python, data structures & algorithms and data analysis',
       'Team minor projects: MindSpace and N.A.V.R.A.A.H',
     ],
-    achievements: ['Dean’s Honours Award — 9.12 CGPA', 'Member of the BOL Club'],
+    achievements: [
+      'Dean’s Honours Award — 9.12 CGPA',
+      'HackIIITD 2026 (IIIT-Delhi): reached round 3 with KhetKaaj',
+      'Fork-IT 2026 (IIIT-Delhi): reached round 2 with SwaadSaar',
+      'Member of the BOL Club',
+    ],
     skills: ['HTML & CSS', 'JavaScript', 'React', 'Python', 'DSA', 'Data analysis'],
     line: 'Day one of B.Tech. The plot thickens.',
     mood: 'thinking',
