@@ -24,8 +24,8 @@ const IconExternal = () => (
 
 /**
  * Full-screen PDF reader in a native <dialog> (focus trap + Esc for free).
- * Opens the document straight away, with Download and Open-in-new-tab always
- * visible — some mobile browsers can't render PDFs inline.
+ * The document fills the page; a side rail holds Download and Open-in-new-tab
+ * (always visible — some mobile browsers can't render PDFs inline).
  */
 export function PdfViewer({ doc, onClose }: { doc: PdfDoc | null; onClose: () => void }) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -59,23 +59,21 @@ export function PdfViewer({ doc, onClose }: { doc: PdfDoc | null; onClose: () =>
     >
       {doc && (
         <div className="pdfv__sheet">
-          <header className="pdfv__bar">
+          <iframe className="pdfv__frame" src={`${doc.src}#view=FitH`} title={doc.title} />
+          <aside className="pdfv__rail">
+            <button type="button" className="pdfv__close" onClick={onClose} aria-label="Close">
+              ✕
+            </button>
             <h2 id="pdfv-title" className="pdfv__title">
               {doc.title}
             </h2>
-            <div className="pdfv__actions">
-              <a className="pdfv__btn pdfv__btn--hot" href={doc.src} download={doc.fileName}>
-                <IconDownload /> Download PDF
-              </a>
-              <a className="pdfv__btn" href={doc.src} target="_blank" rel="noopener noreferrer">
-                <IconExternal /> New tab<span className="sr-only"> (opens in a new tab)</span>
-              </a>
-              <button type="button" className="pdfv__close" onClick={onClose} aria-label="Close">
-                ✕
-              </button>
-            </div>
-          </header>
-          <iframe className="pdfv__frame" src={`${doc.src}#view=FitH`} title={doc.title} />
+            <a className="pdfv__btn pdfv__btn--hot" href={doc.src} download={doc.fileName}>
+              <IconDownload /> Download PDF
+            </a>
+            <a className="pdfv__btn" href={doc.src} target="_blank" rel="noopener noreferrer">
+              <IconExternal /> Open in new tab<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </aside>
         </div>
       )}
     </dialog>
