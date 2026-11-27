@@ -78,7 +78,7 @@ export const JOURNEY: Chapter[] = [
     organisation: 'Your team?',
     position: 'Open to opportunities',
     duration: 'Coming soon',
-    responsibilities: ['Where AI meets hardware: robotics, embedded systems and beyond'],
+    responsibilities: ['Where AI meets hardware: robotics, embedded systems, system design and beyond'],
     achievements: null,
     skills: null,
     line: 'Next chapter? That might be you.',

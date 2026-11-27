@@ -31,7 +31,7 @@ const FACTS: { k: string; v: string }[] = [
   { k: 'Academics', v: uni?.achievements?.[0] ?? '' },
   { k: 'Role', v: ambassador ? `${ambassador.organisation} ${ambassador.position} (${ambassador.duration})` : '' },
   { k: 'Hackathons', v: HACKATHONS.map((h) => `${h.event.split(' · ')[0]}: round ${h.round}`).join(' · ') },
-  { k: 'Focus', v: 'AI meets hardware: robotics, drones & embedded systems' },
+  { k: 'Focus', v: 'AI meets hardware: robotics, drones, embedded systems & system design' },
   { k: 'Based in', v: SITE.location },
 ].filter((f) => f.v);
 
