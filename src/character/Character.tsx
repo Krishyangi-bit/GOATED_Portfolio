@@ -11,6 +11,7 @@ import { gsap } from '../lib/gsap';
 import { EASE, clamp } from '../lib/motion';
 import { hasFinePointer, useReducedMotion } from '../hooks/useReducedMotion';
 import { CANVAS, POSES, pct, resolvePose, type Mood, type Pose } from './poses';
+import { playMoodVoice } from '../lib/softSound';
 import './Character.css';
 
 export type CharacterHandle = {
@@ -76,6 +77,15 @@ export const Character = forwardRef<CharacterHandle, Props>(function Character(
   const reduced = useReducedMotion();
 
   const rootRef = useRef<HTMLElement | null>(null);
+
+  // a little vocalisation whenever her expression changes (only if she's on screen)
+  const lastMood = useRef(mood);
+  useEffect(() => {
+    if (lastMood.current === mood) return;
+    lastMood.current = mood;
+    const r = rootRef.current?.getBoundingClientRect();
+    if (r && r.bottom > 0 && r.top < window.innerHeight && r.width > 0) playMoodVoice(mood);
+  }, [mood]);
   const tiltRef = useRef<HTMLDivElement>(null);
   const rigRef = useRef<HTMLDivElement>(null);
   const layers = useRef<Partial<Record<Pose, HTMLDivElement | null>>>({});

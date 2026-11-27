@@ -11,7 +11,7 @@ import { ComicButton } from '../components/ComicButton';
 import { Burst } from '../components/Burst';
 import { Doodle, IconArrowDown, IconLinkedin } from '../components/Doodles';
 import { hasFinePointer, useReducedMotion } from '../hooks/useReducedMotion';
-import { playSoft } from '../lib/softSound';
+import { playMoodVoice, playSoft } from '../lib/softSound';
 import './Hero.css';
 
 type Props = {
@@ -206,7 +206,7 @@ export function Hero({ start, returning }: Props) {
     interacted.current = true;
     const line = DIALOGUE.clicks[clicks.current % DIALOGUE.clicks.length];
     clicks.current++;
-    playSoft('pop', { rate: 1.1 });
+    playMoodVoice(line.mood); // the cooldown stops the expression change from doubling it
     say(line);
   };
 
