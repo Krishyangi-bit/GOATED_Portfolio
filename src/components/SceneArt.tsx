@@ -70,6 +70,52 @@ export function SceneArt({ scene }: { scene: Scene }) {
         </g>
       )}
 
+      {scene === 'hackathon' && (
+        <g>
+          <rect width="1000" height="600" fill="#2445d2" />
+          {/* night sky: it's a 24-hour hack */}
+          {[
+            [90, 80],
+            [210, 150],
+            [360, 60],
+            [930, 90],
+            [520, 120],
+          ].map(([x, y], i) => (
+            <circle key={i} cx={x} cy={y} r="5" fill="#ffd23f" />
+          ))}
+          <path d="M880 60 a60 60 0 1 0 50 95 a48 48 0 1 1 -50 -95z" fill="#fff8ea" stroke={INK} strokeWidth="5" />
+          <rect y="470" width="1000" height="130" fill="#142a8a" />
+          {/* desk + laptop */}
+          <g {...ink}>
+            <rect x="300" y="450" width="520" height="34" fill="#c4521a" />
+            <rect x="420" y="250" width="280" height="190" rx="10" fill="#16131c" />
+            <rect x="440" y="270" width="240" height="150" fill="#0f4a47" />
+            <path d="M390 440 h340 l-20 14 h-300 z" fill="#efdcbc" />
+          </g>
+          <g stroke="#8fd0c4" strokeWidth="9" strokeLinecap="round">
+            <path d="M465 300 h70 M465 330 h120 M485 360 h90 M465 390 h50" />
+          </g>
+          {/* 24h clock */}
+          <g {...ink}>
+            <circle cx="170" cy="330" r="85" fill="#fff8ea" />
+            <path d="M170 330 V275 M170 330 l40 22" fill="none" />
+          </g>
+          <text x="170" y="395" textAnchor="middle" fontFamily="var(--font-sfx)" fontSize="34" fill={INK}>
+            24H
+          </text>
+          {/* coffee */}
+          <g {...ink}>
+            <rect x="740" y="390" width="56" height="60" rx="6" fill="#fff8ea" />
+            <path d="M796 404 c22 0 22 30 0 30" fill="none" />
+            <path d="M755 372 c-8 -14 8 -20 0 -34 M778 372 c-8 -14 8 -20 0 -34" fill="none" strokeWidth="4" />
+          </g>
+          {/* trophy-ish badge */}
+          <text x="560" y="210" textAnchor="middle" fontFamily="var(--font-sfx)" fontSize="96" fill="#ffd23f" stroke={INK} strokeWidth="5">
+            HACK!
+          </text>
+        </g>
+      )}
+
       {scene === 'next' && (
         <g>
           <rect width="1000" height="600" fill="#ffb07a" />

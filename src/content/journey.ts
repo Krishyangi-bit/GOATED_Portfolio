@@ -8,7 +8,7 @@
  */
 import type { Mood } from '../character/poses';
 
-export type Scene = 'campus' | 'ambassador' | 'next';
+export type Scene = 'campus' | 'ambassador' | 'hackathon' | 'next';
 
 export type Chapter = {
   id: string;
@@ -22,6 +22,10 @@ export type Chapter = {
   responsibilities: string[] | null;
   achievements: string[] | null;
   skills: string[] | null;
+  /** overrides the "Responsibilities" heading on the card */
+  responsibilitiesLabel?: string;
+  /** public path to a certificate PDF, opened in the in-page viewer */
+  certificate?: { label: string; src: string; fileName: string };
   /** what she says as she arrives in this scene */
   line: string;
   mood: Mood;
@@ -43,8 +47,6 @@ export const JOURNEY: Chapter[] = [
     ],
     achievements: [
       'Dean’s Honours Award — 9.12 CGPA',
-      'HackIIITD 2026 (IIIT-Delhi): reached round 3 with KhetKaaj',
-      'Fork-IT 2026 (IIIT-Delhi): reached round 2 with SwaadSaar',
       'Member of the BOL Club',
     ],
     skills: ['HTML & CSS', 'JavaScript', 'React', 'Python', 'DSA', 'Data analysis'],
@@ -71,8 +73,36 @@ export const JOURNEY: Chapter[] = [
     mood: 'greeting',
   },
   {
-    id: 'next',
+    id: 'hackathons',
     num: '03',
+    title: 'Side Quests',
+    scene: 'hackathon',
+    organisation: 'IIIT-Delhi · ESYA ’26',
+    position: 'Hackathon participant · HackIIITD & Fork-IT',
+    duration: 'Oct – Nov 2026',
+    location: 'New Delhi',
+    responsibilitiesLabel: 'What we built',
+    responsibilities: [
+      'HackIIITD 2026 (national-level, 24 hours): KhetKaaj, a WhatsApp and web assistant for farmers in Hindi, Hinglish and English. It gives mandi selling advice, matches farmers to government schemes and prepares crop-damage claim dossiers, and it understands voice notes',
+      'Fork-IT 2026 (FoodoScope track): SwaadSaar, a menu optimiser that cuts single-use kitchen ingredients by comparing flavour compounds, while the head chef approves every swap',
+    ],
+    achievements: [
+      'HackIIITD 2026: reached round 3',
+      'Fork-IT 2026: reached round 2',
+      'SwaadSaar cut a 10-dish menu from 39 to 31 ingredients, using 38 API calls instead of 184',
+    ],
+    skills: ['Python', 'FastAPI', 'React', 'Node.js', 'Express', 'Twilio WhatsApp', 'FoodoScope APIs', 'Teamwork under pressure'],
+    certificate: {
+      label: 'HackIIITD 2026 certificate',
+      src: '/docs/hackiiitd-2026-certificate.pdf',
+      fileName: 'HackIIITD_2026_Certificate.pdf',
+    },
+    line: 'Two hackathons, one campus, zero sleep. Totally worth it.',
+    mood: 'excited',
+  },
+  {
+    id: 'next',
+    num: '04',
     title: 'The Next Adventure',
     scene: 'next',
     organisation: 'Your team?',

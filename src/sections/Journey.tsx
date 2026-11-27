@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { gsap, useGSAP } from '../lib/gsap';
 import { EASE } from '../lib/motion';
 import { JOURNEY, type Chapter } from '../content/journey';
@@ -8,7 +8,7 @@ import { Bubble, SpeechBubble } from '../components/SpeechBubble';
 import { ChapterEdge, ChapterSplash, Todo } from '../components/Chapter';
 import { SceneArt } from '../components/SceneArt';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import { JourneyHackathons } from './JourneyHackathons';
+import { PdfViewer, type PdfDoc } from '../components/PdfViewer';
 import './Journey.css';
 
 /** Fields that genuinely weren't supplied show as TODO chips — except on the open-ended "next" chapter. */
@@ -35,7 +35,7 @@ function Field({ label, items, chapter }: { label: string; items: string[] | nul
   );
 }
 
-function ChapterCard({ ch }: { ch: Chapter }) {
+function ChapterCard({ ch, onDoc }: { ch: Chapter; onDoc: (d: PdfDoc) => void }) {
   return (
     <div className="ch" data-card>
       <p className="ch__num">Chapter {ch.num}</p>
@@ -63,9 +63,18 @@ function ChapterCard({ ch }: { ch: Chapter }) {
           </div>
         )}
       </dl>
-      <Field label="Responsibilities" items={ch.responsibilities} chapter={ch} />
+      <Field label={ch.responsibilitiesLabel ?? 'Responsibilities'} items={ch.responsibilities} chapter={ch} />
       <Field label="Achievements & highlights" items={ch.achievements} chapter={ch} />
       <Field label="Skills acquired" items={ch.skills} chapter={ch} />
+      {ch.certificate && (
+        <button
+          type="button"
+          className="ch__cta"
+          onClick={() => ch.certificate && onDoc({ title: ch.certificate.label, src: ch.certificate.src, fileName: ch.certificate.fileName })}
+        >
+          📜 View certificate
+        </button>
+      )}
       {ch.id === 'next' && (
         <a className="ch__cta" href="#contact">
           Write this chapter with me →
@@ -87,6 +96,7 @@ export function Journey() {
   const ctl = useCharacterController('idle', 'idle');
   const { say } = ctl;
   const active = useRef(-1);
+  const [doc, setDoc] = useState<PdfDoc | null>(null);
 
   useGSAP(
     () => {
@@ -199,7 +209,7 @@ export function Journey() {
                 <div className="scene__art">
                   <SceneArt scene={ch.scene} />
                 </div>
-                <ChapterCard ch={ch} />
+                <ChapterCard ch={ch} onDoc={setDoc} />
               </article>
             ))}
           </div>
@@ -234,7 +244,7 @@ export function Journey() {
         </div>
       </div>
 
-      <JourneyHackathons />
+      <PdfViewer doc={doc} onClose={() => setDoc(null)} />
     </section>
   );
 }

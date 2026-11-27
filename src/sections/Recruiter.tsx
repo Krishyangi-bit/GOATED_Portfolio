@@ -3,7 +3,6 @@ import { gsap, useGSAP } from '../lib/gsap';
 import { EASE } from '../lib/motion';
 import { SITE } from '../content/site';
 import { JOURNEY } from '../content/journey';
-import { HACKATHONS } from '../content/achievements';
 import { ChapterEdge, ChapterSplash, Todo } from '../components/Chapter';
 import { ComicButton } from '../components/ComicButton';
 import { PdfViewer, type PdfDoc } from '../components/PdfViewer';
@@ -24,13 +23,14 @@ const IconDoc = () => (
 
 const uni = JOURNEY.find((c) => c.id === 'krmu');
 const ambassador = JOURNEY.find((c) => c.id === 'gemini');
+const hackathons = JOURNEY.find((c) => c.id === 'hackathons');
 
 /** The TL;DR, built from the same content files as the rest of the comic. */
 const FACTS: { k: string; v: string }[] = [
   { k: 'Studying', v: uni ? `${uni.position.replace(' student', '')} · ${uni.organisation} (${uni.duration})` : '' },
   { k: 'Academics', v: uni?.achievements?.[0] ?? '' },
   { k: 'Role', v: ambassador ? `${ambassador.organisation} ${ambassador.position} (${ambassador.duration})` : '' },
-  { k: 'Hackathons', v: HACKATHONS.map((h) => `${h.event.split(' · ')[0]}: round ${h.round}`).join(' · ') },
+  { k: 'Hackathons', v: (hackathons?.achievements ?? []).filter((a) => /round \d/.test(a)).join(' · ') },
   { k: 'Focus', v: 'AI meets hardware: robotics, drones, embedded systems & system design' },
   { k: 'Based in', v: SITE.location },
 ].filter((f) => f.v);
