@@ -76,6 +76,39 @@
 }
 
 /* sound ------------------------------------------------------------------ */
+.nav__recruit {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 14px;
+  background: var(--orange);
+  color: var(--ink);
+  border: var(--line) solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--ink);
+  font-family: var(--font-sfx);
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition:
+    transform 0.2s var(--ease-pop),
+    box-shadow 0.2s var(--ease-pop);
+}
+.nav__recruit svg {
+  width: 20px;
+  height: 20px;
+}
+.nav__recruit:hover,
+.nav__recruit:focus-visible {
+  transform: translate(-1px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.nav__recruit:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
 .nav__sound {
   display: inline-flex;
   align-items: center;
@@ -196,11 +229,19 @@
 
 /* tablet + mobile: compact chips in the bar ------------------------------ */
 @media (max-width: 1023px) {
+  .nav__recruit {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+  .nav__recruit-label {
+    display: none;
+  }
   /* a scrolling strip of chips between the logo and the sound toggle */
   .nav__chapters {
     top: 0;
     left: calc(var(--gutter) + 200px);
-    right: calc(var(--gutter) + 112px);
+    right: calc(var(--gutter) + 168px);
     height: var(--nav-h);
     display: flex;
     align-items: center;
@@ -250,7 +291,7 @@
   }
   .nav__chapters {
     left: calc(var(--gutter) + 50px);
-    right: calc(var(--gutter) + 48px);
+    right: calc(var(--gutter) + 104px);
   }
   .nav__tab {
     padding: 5px 10px;

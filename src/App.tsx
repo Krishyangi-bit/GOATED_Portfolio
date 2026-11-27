@@ -13,7 +13,6 @@ import { Projects } from './sections/Projects';
 import { Journey } from './sections/Journey';
 import { Arsenal } from './sections/Arsenal';
 import { Multiverse } from './sections/Multiverse';
-import { Recruiter } from './sections/Recruiter';
 import { Contact } from './sections/Contact';
 
 type Intro = 'cover' | 'opening' | 'done';
@@ -68,7 +67,6 @@ function Comic() {
         <Journey />
         <Arsenal />
         <Multiverse />
-        <Recruiter />
         <Contact />
       </main>
       {intro !== 'done' && <ComicCover onOpen={() => setIntro('opening')} onDone={() => setIntro('done')} />}

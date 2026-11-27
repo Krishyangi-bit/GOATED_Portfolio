@@ -34,7 +34,7 @@ const IconMail = () => (
 );
 
 /**
- * CHAPTER 08 — TO BE CONTINUED…?
+ * CHAPTER 07 — TO BE CONTINUED…?
  * The closing page. The form really sends (via FormSubmit to her inbox);
  * the BOOM only plays when the service confirms delivery.
  */
@@ -141,7 +141,7 @@ export function Contact() {
 
       <div className="finale chapter__canvas">
         <header className="finale__head">
-          <p className="finale__issue caption caption--ink">Chapter 08 · The final transmission</p>
+          <p className="finale__issue caption caption--ink">Chapter 07 · The final transmission</p>
           <h2 id="contact-title" className="finale__title">
             {['To', 'be', 'continued…'].map((w) => (
               <span key={w} className="finale__mask">

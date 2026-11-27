@@ -1,12 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import { ScrollTrigger } from '../lib/gsap';
-import { CHAPTERS, type ChapterId } from '../content/site';
+import { CHAPTERS, SITE, type ChapterId } from '../content/site';
 import { burstPoints } from '../lib/motion';
 import { setMuted, useMuted } from '../lib/softSound';
 import { IconSound } from './Doodles';
+import { PdfViewer, type PdfDoc } from './PdfViewer';
 import './ChapterNav.css';
 
 const BADGE = burstPoints(10, 5, 0.74, 0.08);
+
+const RESUME: PdfDoc = { title: `${SITE.fullName} · Résumé`, src: SITE.resume, fileName: SITE.resumeFileName };
+
+const IconResume = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" aria-hidden="true">
+    <path d="M6 3h8l4 4v14H6z" />
+    <path d="M14 3v4h4M9 12h6M9 16h6" strokeLinecap="round" />
+  </svg>
+);
 
 /**
  * Chapter navigation, styled as the masthead and bookmark tabs of the comic.
@@ -16,6 +26,7 @@ export function ChapterNav() {
   const [active, setActive] = useState<ChapterId>(CHAPTERS[0].id);
   const [solid, setSolid] = useState(false);
   const muted = useMuted();
+  const [resume, setResume] = useState<PdfDoc | null>(null);
   const strip = useRef<HTMLOListElement>(null);
 
   // on small screens the chips scroll sideways: keep the current chapter in view
@@ -62,6 +73,18 @@ export function ChapterNav() {
 
       <button
         type="button"
+        className="nav__recruit"
+        onClick={() => setResume(RESUME)}
+        aria-haspopup="dialog"
+        title="Recruiter mode: open the résumé"
+      >
+        <IconResume />
+        <span className="nav__recruit-label">Recruiter mode</span>
+        <span className="sr-only">Recruiter mode: open the résumé</span>
+      </button>
+
+      <button
+        type="button"
         className="nav__sound"
         aria-pressed={!muted}
         onClick={() => setMuted(!muted)}
@@ -89,6 +112,7 @@ export function ChapterNav() {
           ))}
         </ol>
       </nav>
+      <PdfViewer doc={resume} onClose={() => setResume(null)} />
     </>
   );
 }

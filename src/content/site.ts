@@ -20,12 +20,8 @@ export const SITE = {
     /** not supplied yet — the LeetCode portal shows as "under construction" until set */
     leetcode: null as string | null,
   },
-  /**
-   * Résumé shown in the Recruiter's Desk. Drop the PDF into `public/docs/` and
-   * set the path here (e.g. '/docs/Krishyangi_Dixit_Resume.pdf').
-   * While it's null the desk shows a TODO chip instead of the buttons.
-   */
-  resume: null as string | null,
+  /** Résumé opened by the "Recruiter mode" button in the top bar. Lives in public/docs/. */
+  resume: '/docs/Krishyangi_Dixit_Resume.pdf',
   /** file name used when someone downloads the résumé */
   resumeFileName: 'Krishyangi_Dixit_Resume.pdf',
 } as const;
@@ -48,8 +44,7 @@ export const CHAPTERS = [
   { id: 'journey', num: '04', label: 'Journey', title: 'Character Development' },
   { id: 'arsenal', num: '05', label: 'Arsenal', title: 'The Arsenal' },
   { id: 'multiverse', num: '06', label: 'Portals', title: 'The Multiverse' },
-  { id: 'recruiter', num: '07', label: 'Recruiters', title: 'The Recruiter’s Desk' },
-  { id: 'contact', num: '08', label: 'Contact', title: 'To Be Continued…?' },
+  { id: 'contact', num: '07', label: 'Contact', title: 'To Be Continued…?' },
 ] as const;
 
 export type ChapterId = (typeof CHAPTERS)[number]['id'];
