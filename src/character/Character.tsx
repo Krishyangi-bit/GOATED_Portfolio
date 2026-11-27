@@ -78,14 +78,14 @@ export const Character = forwardRef<CharacterHandle, Props>(function Character(
 
   const rootRef = useRef<HTMLElement | null>(null);
 
-  // a little vocalisation whenever her expression changes (only if she's on screen)
-  const lastMood = useRef(mood);
+  // a little vocalisation whenever her drawn expression changes (only if she's on screen)
+  const lastPose = useRef(pose);
   useEffect(() => {
-    if (lastMood.current === mood) return;
-    lastMood.current = mood;
+    if (lastPose.current === pose) return; // e.g. thinking → smirk is the same drawing
+    lastPose.current = pose;
     const r = rootRef.current?.getBoundingClientRect();
     if (r && r.bottom > 0 && r.top < window.innerHeight && r.width > 0) playMoodVoice(mood);
-  }, [mood]);
+  }, [pose, mood]);
   const tiltRef = useRef<HTMLDivElement>(null);
   const rigRef = useRef<HTMLDivElement>(null);
   const layers = useRef<Partial<Record<Pose, HTMLDivElement | null>>>({});

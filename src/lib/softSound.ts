@@ -7,17 +7,18 @@
  *   chime  rising woosh + one clean, short ping when the home page appears
  *   pop    short, bright flick when she's poked or BAM! is pressed
  *
- * Expression voices (playMoodVoice): tiny synthesized cartoon vocalisations —
- * a buzzy voice source shaped by vowel formant filters — one per expression:
- *   thinking "hmmm" · mischief/smirk "heh-heh" · excited/happy "woo-hoo!"
- *   greeting/wave "hey!" · confused "huh?" · surprised "oh!"
+ * Expression voices (playMoodVoice): tiny synthesized girl's-voice
+ * vocalisations — a light, high-pitched voice source shaped by vowel formant
+ * filters, with a touch of breath. One per drawn expression:
+ *   excited "HAHA!" · mischief (smirk / thinking) "HMMM" · confused "HUH?"
+ *   idle and the smiling wave pose stay silent.
  *
  * Browsers only allow audio after a real gesture, so nothing plays until the
  * visitor's first click / tap / key press.
  */
 import { useSyncExternalStore } from 'react';
 import { readFlag, writeFlag } from './storage';
-import type { Mood } from '../character/poses';
+import { resolvePose, type Mood, type Pose } from '../character/poses';
 
 export type SoftSound = 'panel' | 'chime' | 'pop';
 
@@ -28,6 +29,8 @@ const MUTE_KEY = 'lcb-muted';
 let ctx: AudioContext | null = null;
 let out: GainNode | null = null;
 let noise: AudioBuffer | null = null;
+/** soft voice source: harmonics fall off fast, so it's light rather than buzzy */
+let glottal: PeriodicWave | null = null;
 const last: Partial<Record<SoftSound, number>> = {};
 
 // --- mute: on by default, the visitor's choice is remembered ---------------
@@ -74,6 +77,11 @@ function ensure() {
   noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
   const data = noise.getChannelData(0);
   for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+  const n = 24;
+  const real = new Float32Array(n + 1);
+  const imag = new Float32Array(n + 1);
+  for (let k = 1; k <= n; k++) imag[k] = 1 / Math.pow(k, 1.7);
+  glottal = ctx.createPeriodicWave(real, imag);
   return ctx;
 }
 
@@ -156,14 +164,11 @@ export function playSoft(name: SoftSound, opts: { rate?: number } = {}) {
 // Expression voices
 // ---------------------------------------------------------------------------
 
-/** vowel formants (F1, F2, F3 in Hz) for a light, higher voice */
+/** vowel formants (F1, F2, F3 in Hz) for a girl's voice */
 const VOWEL = {
-  ee: [310, 2790, 3310],
-  eh: [610, 2330, 2990],
-  ah: [850, 1220, 2810],
-  oh: [500, 900, 2800],
-  oo: [370, 950, 2670],
-  uh: [700, 1350, 2780],
+  ah: [1000, 1500, 3200],
+  uh: [850, 1600, 3100],
+  eh: [700, 2600, 3300],
 } as const;
 type Vowel = keyof typeof VOWEL;
 
@@ -191,11 +196,11 @@ function syllable(ac: AudioContext, t0: number, s: Syllable) {
     n.buffer = noise;
     const f = ac.createBiquadFilter();
     f.type = 'bandpass';
-    f.frequency.value = s.vowel === 'mm' ? 900 : VOWEL[s.vowel[0]][1];
+    f.frequency.value = s.vowel === 'mm' ? 1400 : VOWEL[s.vowel[0]][1];
     f.Q.value = 1.2;
     const g = ac.createGain();
     g.gain.setValueAtTime(0.0001, t - 0.045);
-    g.gain.exponentialRampToValueAtTime(0.5 * peak, t - 0.015);
+    g.gain.exponentialRampToValueAtTime(0.7 * peak, t - 0.015);
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.03);
     n.connect(f).connect(g).connect(out!);
     n.start(t - 0.045, Math.random() * 0.5);
@@ -203,7 +208,8 @@ function syllable(ac: AudioContext, t0: number, s: Syllable) {
   }
 
   const osc = ac.createOscillator();
-  osc.type = 'sawtooth';
+  if (glottal) osc.setPeriodicWave(glottal);
+  else osc.type = 'triangle';
   osc.frequency.setValueAtTime(s.pitch[0], t);
   osc.frequency.exponentialRampToValueAtTime(s.pitch[1], end);
   // a little vibrato keeps it from sounding like a robot
@@ -224,10 +230,10 @@ function syllable(ac: AudioContext, t0: number, s: Syllable) {
     // nasal hum: mouth closed, only the low buzz gets through
     const lp = ac.createBiquadFilter();
     lp.type = 'lowpass';
-    lp.frequency.value = 420;
-    lp.Q.value = 3;
+    lp.frequency.value = s.pitch[0] * 1.6;
+    lp.Q.value = 1.5;
     const g = ac.createGain();
-    g.gain.value = 1.4;
+    g.gain.value = 1.5;
     osc.connect(lp).connect(g).connect(env);
   } else {
     const [a, b] = s.vowel;
@@ -237,9 +243,9 @@ function syllable(ac: AudioContext, t0: number, s: Syllable) {
       bp.type = 'bandpass';
       bp.frequency.setValueAtTime(fa, t);
       bp.frequency.linearRampToValueAtTime(fb, end);
-      bp.Q.value = fa / 90;
+      bp.Q.value = fa / 160;
       const g = ac.createGain();
-      g.gain.value = [2.6, 1.6, 0.7][i];
+      g.gain.value = [2.2, 1.3, 0.5][i];
       osc.connect(bp).connect(g).connect(env);
     });
   }
@@ -250,30 +256,17 @@ function syllable(ac: AudioContext, t0: number, s: Syllable) {
   lfo.stop(end + 0.02);
 }
 
-/** one short vocalisation per expression; idle / neutral stay silent */
-const VOICES: Partial<Record<Mood, Syllable[]>> = {
-  thinking: [{ at: 0, dur: 0.75, pitch: [235, 205], vowel: 'mm', peak: 0.9 }],
-  mischief: [
-    { at: 0, dur: 0.12, pitch: [330, 300], vowel: ['eh', 'eh'], h: true, peak: 0.8 },
-    { at: 0.19, dur: 0.14, pitch: [300, 270], vowel: ['eh', 'eh'], h: true, peak: 0.75 },
-  ],
-  smirk: [
-    { at: 0, dur: 0.12, pitch: [330, 300], vowel: ['eh', 'eh'], h: true, peak: 0.8 },
-    { at: 0.19, dur: 0.14, pitch: [300, 270], vowel: ['eh', 'eh'], h: true, peak: 0.75 },
-  ],
+/** one short vocalisation per drawn expression; idle and the smiling wave pose are silent */
+const VOICES: Partial<Record<Pose, Syllable[]>> = {
+  // "HAHA!" — two bright laughs, the second higher
   excited: [
-    { at: 0, dur: 0.2, pitch: [300, 420], vowel: ['oo', 'oo'], peak: 0.9 },
-    { at: 0.24, dur: 0.3, pitch: [380, 560], vowel: ['oo', 'oo'], h: true, peak: 1 },
+    { at: 0, dur: 0.13, pitch: [520, 470], vowel: ['ah', 'ah'], h: true, peak: 0.9 },
+    { at: 0.2, dur: 0.17, pitch: [600, 500], vowel: ['ah', 'ah'], h: true, peak: 1 },
   ],
-  happy: [
-    { at: 0, dur: 0.2, pitch: [300, 420], vowel: ['oo', 'oo'], peak: 0.9 },
-    { at: 0.24, dur: 0.3, pitch: [380, 560], vowel: ['oo', 'oo'], h: true, peak: 1 },
-  ],
-  greeting: [{ at: 0, dur: 0.32, pitch: [300, 400], vowel: ['eh', 'ee'], h: true, peak: 1 }],
-  wave: [{ at: 0, dur: 0.32, pitch: [300, 400], vowel: ['eh', 'ee'], h: true, peak: 1 }],
-  waving: [{ at: 0, dur: 0.32, pitch: [300, 400], vowel: ['eh', 'ee'], h: true, peak: 1 }],
-  confused: [{ at: 0, dur: 0.36, pitch: [220, 360], vowel: ['uh', 'uh'], h: true, peak: 1 }],
-  surprised: [{ at: 0, dur: 0.26, pitch: [380, 300], vowel: ['oh', 'oo'], peak: 1 }],
+  // "HMMM" — a thoughtful, closed-mouth hum that dips and comes back up
+  mischief: [{ at: 0, dur: 0.7, pitch: [440, 400], vowel: 'mm', h: true, peak: 0.9 }],
+  // "HUH?" — rises at the end like a question
+  confused: [{ at: 0, dur: 0.3, pitch: [400, 640], vowel: ['uh', 'uh'], h: true, peak: 1 }],
 };
 
 const VOICE_COOLDOWN_MS = 450;
@@ -282,7 +275,7 @@ let lastVoice = 0;
 /** Play the little vocalisation that goes with an expression (if any). */
 export function playMoodVoice(mood: Mood) {
   try {
-    const parts = VOICES[mood];
+    const parts = VOICES[resolvePose(mood)];
     if (!parts || muted || !ctx || ctx.state !== 'running' || !out) return;
     const now = performance.now();
     if (now - lastVoice < VOICE_COOLDOWN_MS) return;
