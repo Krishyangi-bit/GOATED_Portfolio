@@ -1,10 +1,11 @@
 /**
- * Very quiet, rounded sounds: no noise, no square/saw waves, slow attacks and
- * a low-pass on everything, so nothing ever sounds sharp.
+ * Quiet, crisp "woosh" sounds made from short bursts of filtered noise:
+ * a band-pass filter sweeps through the noise, which reads as air moving
+ * past — sharp and quick rather than bubbly.
  *
- *   panel  soft woody "pop" as a comic panel lands
- *   chime  two gentle notes when the home page appears
- *   pop    tiny bubble-pop when she's poked or BAM! is pressed
+ *   panel  quick swish as a comic panel slides in
+ *   chime  rising woosh + one clean, short ping when the home page appears
+ *   pop    short, bright flick when she's poked or BAM! is pressed
  *
  * Browsers only allow audio after a real gesture, so nothing plays until the
  * visitor's first click / tap / key press.
@@ -14,12 +15,13 @@ import { readFlag, writeFlag } from './storage';
 
 export type SoftSound = 'panel' | 'chime' | 'pop';
 
-const MASTER = 0.05;
+const MASTER = 0.07;
 const COOLDOWN_MS = 120;
 const MUTE_KEY = 'lcb-muted';
 
 let ctx: AudioContext | null = null;
 let out: GainNode | null = null;
+let noise: AudioBuffer | null = null;
 const last: Partial<Record<SoftSound, number>> = {};
 
 // --- mute: on by default, the visitor's choice is remembered ---------------
@@ -55,13 +57,17 @@ function ensure() {
   const AC = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
   if (!AC) return null;
   ctx = new AC();
-  const warm = ctx.createBiquadFilter();
-  warm.type = 'lowpass';
-  warm.frequency.value = 1400;
-  warm.Q.value = 0.4;
+  // only trim the low rumble; the top end stays open so wooshes sound crisp
+  const trim = ctx.createBiquadFilter();
+  trim.type = 'highpass';
+  trim.frequency.value = 180;
   out = ctx.createGain();
   out.gain.value = MASTER;
-  out.connect(warm).connect(ctx.destination);
+  out.connect(trim).connect(ctx.destination);
+  // one second of white noise, reused by every woosh
+  noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+  const data = noise.getChannelData(0);
+  for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
   return ctx;
 }
 
@@ -75,7 +81,29 @@ if (typeof window !== 'undefined') {
   window.addEventListener('touchstart', unlock, { passive: true });
 }
 
-/** a sine note with a soft swell in and a long gentle fade */
+/**
+ * Woosh: noise through a band-pass whose centre sweeps from `from` to `to` Hz.
+ * Fast attack, quick tail — a narrow-ish band (Q) keeps it airy, not hissy.
+ */
+function woosh(ac: AudioContext, t: number, from: number, to: number, peak: number, dur: number, q = 1.6) {
+  if (!noise) return;
+  const src = ac.createBufferSource();
+  src.buffer = noise;
+  const bp = ac.createBiquadFilter();
+  bp.type = 'bandpass';
+  bp.Q.value = q;
+  bp.frequency.setValueAtTime(from, t);
+  bp.frequency.exponentialRampToValueAtTime(to, t + dur);
+  const g = ac.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(peak, t + dur * 0.3);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  src.connect(bp).connect(g).connect(out!);
+  src.start(t, Math.random() * 0.5);
+  src.stop(t + dur + 0.02);
+}
+
+/** a short tone with a fast attack and fade */
 function note(ac: AudioContext, t: number, from: number, to: number, peak: number, attack: number, decay: number, type: OscillatorType = 'sine') {
   const o = ac.createOscillator();
   const g = ac.createGain();
@@ -92,15 +120,15 @@ function note(ac: AudioContext, t: number, from: number, to: number, peak: numbe
 
 const RECIPES: Record<SoftSound, (ac: AudioContext, t: number, r: number) => void> = {
   panel(ac, t, r) {
-    note(ac, t, 320 * r, 210 * r, 0.8, 0.012, 0.22);
-    note(ac, t, 640 * r, 420 * r, 0.12, 0.015, 0.12);
+    woosh(ac, t, 700 * r, 3800 * r, 1.4, 0.2);
   },
   chime(ac, t) {
-    note(ac, t, 523, 523, 0.5, 0.03, 0.7);
-    note(ac, t + 0.14, 784, 784, 0.4, 0.03, 0.9);
+    woosh(ac, t, 500, 5000, 1.2, 0.32, 1.2);
+    note(ac, t + 0.26, 1568, 1568, 0.22, 0.004, 0.32, 'triangle');
   },
   pop(ac, t, r) {
-    note(ac, t, 380 * r, 560 * r, 0.6, 0.01, 0.14, 'triangle');
+    woosh(ac, t, 2400 * r, 6000 * r, 1.1, 0.09, 2.2);
+    note(ac, t, 1200 * r, 1800 * r, 0.18, 0.003, 0.06, 'triangle');
   },
 };
 
