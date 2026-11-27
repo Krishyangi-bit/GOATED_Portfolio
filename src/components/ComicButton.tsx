@@ -17,6 +17,8 @@ type Props = {
   /** render as a form submit button */
   submit?: boolean;
   disabled?: boolean;
+  /** link downloads the file (optionally under this name) instead of navigating */
+  download?: string | boolean;
 };
 
 export function ComicButton({
@@ -32,6 +34,7 @@ export function ComicButton({
   className = '',
   submit = false,
   disabled = false,
+  download,
 }: Props) {
   const timer = useRef<number>();
 
@@ -78,6 +81,7 @@ export function ComicButton({
         onClick={click}
         {...handlers}
         {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        {...(download ? { download: download === true ? '' : download } : {})}
       >
         {inner}
         {external && <span className="sr-only"> (opens in a new tab)</span>}
